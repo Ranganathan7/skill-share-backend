@@ -1,0 +1,86 @@
+export enum AccountRoles {
+  PROVIDER = 'PROVIDER',
+  USER = 'USER'
+}
+
+export enum AccountType {
+  INDIVIDUAL = 'INDIVIDUAL',
+  COMPANY = 'COMPANY',
+}
+
+export enum SkillCategory {
+  FRONTEND = 'FRONTEND',
+  BACKEND = 'BACKEND',
+  TESTING = 'TESTING'
+}
+
+export enum RateCurrency {
+  USD = 'USD',
+  AUD = 'AUD',
+  SGD = 'SGD',
+  INR = 'INR',
+}
+
+export enum TaskStatus {
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+}
+
+export enum NatureOfWork {
+  ON_SITE = 'ON_SITE',
+  ONLINE = 'ONLINE'
+}
+
+export const fieldConfig = {
+  email: {
+    length: 100,
+    regex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+  },
+  password: {
+    length: 20,
+    regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
+  },
+  streetNumber: {
+    length: 5,
+    regex: /^[0-9]{1,5}$/,
+  },
+  streetName: {
+    length: 50,
+    regex: /^[a-zA-Z0-9\s,.'-]{1,50}$/,
+  },
+  city: {
+    length: 15,
+    regex: /^[a-zA-Z\s]{1,15}$/,
+  },
+  state: {
+    length: 15,
+    regex: /^[a-zA-Z\s]{1,15}$/,
+  },
+  postCode: {
+    length: 6,
+    regex: /^[0-9]{4,6}$/,
+  },
+  mobileNumber: {
+    length: 10,
+    regex: '^[0-9]{10}$',
+  },
+  name: {
+    length: 50,
+  },
+  phoneNumber: {
+    length: 15,
+    regex: '^[0-9]{10,15}$',
+  },
+  businessTaxNumber: {
+    length: 10,  // fixed length for business tax number (arbitrary 10-character string)
+    regex: '^[A-Z0-9]{10}$',  // regex for business tax number (uppercase letters + numbers)
+  },
+  taskName: {
+    length: 20
+  },
+  taskDescription: {
+    length: 100
+  }
+};
+
