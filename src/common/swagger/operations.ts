@@ -34,5 +34,13 @@ export const swaggerAPIOptions = {
   updateTaskStatus: {
     summary: 'Update task status',
     description: 'This API is used by user to update task status to completed'
+  },
+  addUpdateSkill: {
+    summary: 'Add / Update skill',
+    description: 'This API is used by provider to add / update a skill'
+  },
+  getSkills: {
+    summary: 'Get skills',
+    description: 'This API is fetch skills of a provider'
   }
 }

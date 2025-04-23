@@ -1,13 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from "typeorm";
 import { NatureOfWork, RateCurrency, SkillCategory } from "src/common/constants/constants";
 import { AccountEntity } from "./account.entity";
 
 @Entity({ name: 'skills' })
+@Unique(['account', 'category']) // A provider cant have duplicate skills
 export class SkillEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'enum', enum: SkillCategory, unique: true })
+  @Column({ type: 'enum', enum: SkillCategory })
   category: SkillCategory;
 
   @Column({ type: 'double precision' })
