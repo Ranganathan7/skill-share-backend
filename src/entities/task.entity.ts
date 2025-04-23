@@ -6,11 +6,11 @@ export class ProgressEntity {
   @Column({ type: 'varchar' })
   description: string;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   timestamp: Date;
 }
 
-@Entity()
+@Entity({ name: 'tasks' })
 export class TaskEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,7 +24,7 @@ export class TaskEntity {
   @Column({ type: 'varchar', length: fieldConfig.taskDescription.length })
   description: string;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   expectedStartDate: Date;
 
   @Column({ type: 'double precision' })

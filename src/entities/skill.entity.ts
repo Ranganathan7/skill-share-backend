@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { NatureOfWork, RateCurrency, SkillCategory } from "src/common/constants/constants";
 import { AccountEntity } from "./account.entity";
 
-@Entity()
+@Entity({ name: 'skills' })
 export class SkillEntity {
   @PrimaryGeneratedColumn()
   id: number;

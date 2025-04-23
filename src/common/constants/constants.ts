@@ -38,6 +38,7 @@ export const fieldConfig = {
     regex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   },
   password: {
+    minLength: 8,
     length: 20,
     regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
   },
@@ -83,4 +84,11 @@ export const fieldConfig = {
     length: 100
   }
 };
+
+export const swaggerConstants = {
+  name: "Skill Share Backend API",
+  description: "API docs for skill share backend services",
+  version: "1.0",
+  uri: "docs"
+}
 

@@ -58,7 +58,7 @@ export class CompanyAccountEntity {
 }
 
 // AccountEntity (for both individual / company)
-@Entity()
+@Entity({ name: 'accounts' })
 export class AccountEntity {
   @PrimaryGeneratedColumn()
   id: number;
