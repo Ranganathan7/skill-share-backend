@@ -67,7 +67,7 @@ export class TaskService {
         { user: { id: accountId } },
         { provider: { id: accountId } }
       ],
-      relations: ['user', 'provider'],
+      relations: ['user', 'provider', 'provider.skills'],
     })
 
     if (tasks.length === 0) {

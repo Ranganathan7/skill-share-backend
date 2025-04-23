@@ -70,7 +70,7 @@ export class OfferService {
   async getOffersForAccount(accountId: number) {
     const account = await this.dataSource.manager.findOne(AccountEntity, {
       where: { id: accountId },
-      relations: ['tasksOffered', 'tasksOffered.user', 'tasksOffered.provider', 'tasksPosted', 'tasksPosted.offers', 'tasksPosted.provider'],
+      relations: ['tasksOffered', 'tasksOffered.user', 'tasksOffered.provider', 'tasksPosted', 'tasksPosted.offers', 'tasksPosted.provider', 'tasksPosted.offers.skills'],
     });
 
     if (!account) {
@@ -108,6 +108,7 @@ export class OfferService {
             email: provider.email,
             individualAccount: provider.individualAccount,
             companyAccount: provider.companyAccount,
+            skills: provider.skills,
           })),
         }));
 
