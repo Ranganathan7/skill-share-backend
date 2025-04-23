@@ -12,7 +12,9 @@ import { ApiTags, ApiOperation, ApiBody, ApiParam } from '@nestjs/swagger';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
-import { createTask } from './dto/sample-requests';
+import { createTask, updateTaskProgress, updateTaskStatus } from './dto/sample-requests';
+import { UpdateTaskProgressDto } from './dto/update-progress.dto';
+import { UpdateTaskStatusDto } from './dto/update-status.dto';
 
 @ApiTags('Task related services')
 @Controller('task')
@@ -43,5 +45,35 @@ export class TaskController {
   @ApiOperation(swaggerAPIOptions.createTask)
   async findTaskByAccount(@Param('accountId', ParseIntPipe) accountId: number) {
     return this.taskService.findTasksByAccount(accountId)
+  }
+
+  @Post('update-progress')
+  @HttpCode(HttpStatus.OK)
+  @ApiBody({
+    type: UpdateTaskProgressDto,
+    examples: {
+      updateTaskProgress: {
+        value: updateTaskProgress
+      },
+    }
+  })
+  @ApiOperation(swaggerAPIOptions.updateTaskProgress)
+  async updateProgress(@Body() dto: UpdateTaskProgressDto) {
+    return this.taskService.updateProgress(dto);
+  }
+
+  @Post('update-status')
+  @HttpCode(HttpStatus.OK)
+  @ApiBody({
+    type: UpdateTaskStatusDto,
+    examples: {
+      updateTaskStatus: {
+        value: updateTaskStatus
+      },
+    }
+  })
+  @ApiOperation(swaggerAPIOptions.updateTaskStatus)
+  async updateStatus(@Body() dto: UpdateTaskStatusDto) {
+    return this.taskService.updateStatus(dto);
   }
 }

@@ -1,5 +1,3 @@
-import { ApiOperationOptions } from "@nestjs/swagger";
-
 export const swaggerAPIOptions = {
   createAccount: {
     summary: 'Create account',
@@ -28,5 +26,13 @@ export const swaggerAPIOptions = {
   acceptOffer: {
     summary: 'Accept offer',
     description: 'This API is used to accept an offer from provider by the user'
+  },
+  updateTaskProgress: {
+    summary: 'Update task progress',
+    description: 'This API is used by provider to update task progress'
+  },
+  updateTaskStatus: {
+    summary: 'Update task status',
+    description: 'This API is used by user to update task status to completed'
   }
 }

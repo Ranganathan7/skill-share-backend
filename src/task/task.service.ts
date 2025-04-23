@@ -10,6 +10,8 @@ import { TaskEntity } from '../entities/task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { AccountEntity } from '../entities/account.entity';
 import { AccountRoles, TaskStatus } from 'src/common/constants/constants';
+import { UpdateTaskProgressDto } from './dto/update-progress.dto';
+import { UpdateTaskStatusDto } from './dto/update-status.dto';
 
 @Injectable()
 export class TaskService {
@@ -76,5 +78,110 @@ export class TaskService {
     }
 
     return tasks;
+  }
+
+  async updateProgress(dto: UpdateTaskProgressDto) {
+    const { taskId, description, accountId } = dto;
+
+    const task = await this.dataSource.manager.findOne(TaskEntity, {
+      where: { id: taskId },
+      relations: ['provider']
+    });
+
+    if (!task) {
+      throw new HttpException(
+        {
+          errorCode: 'TaskNotFound',
+          description: 'Task not found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (!task.provider || task.provider.id !== accountId) {
+      throw new HttpException(
+        {
+          errorCode: 'InvalidTaskProgressUpdate',
+          description: 'Task is not assigned to a provider / invalid account id',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (task.status === TaskStatus.COMPLETED) {
+      throw new HttpException(
+        {
+          errorCode: 'TaskAlreadyCompleted',
+          description: 'Task is already completed!',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    task.progress.push({
+      description,
+      timestamp: new Date(),
+    })
+    await this.dataSource.manager.save(TaskEntity, task);
+
+    return {
+      message: 'Task progress updated successfully!'
+    }
+  }
+
+  async updateStatus(dto: UpdateTaskStatusDto) {
+    const { taskId, accountId } = dto;
+
+    const task = await this.dataSource.manager.findOne(TaskEntity, {
+      where: { id: taskId },
+      relations: ['user']
+    });
+
+    if (!task) {
+      throw new HttpException(
+        {
+          errorCode: 'TaskNotFound',
+          description: 'Task not found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    if (task.user.id !== accountId) {
+      throw new HttpException(
+        {
+          errorCode: 'InvalidTaskStatusUpdate',
+          description: 'Task is not created by given user',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (task.status === TaskStatus.COMPLETED) {
+      throw new HttpException(
+        {
+          errorCode: 'TaskAlreadyCompleted',
+          description: 'Task is already completed!',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (task.status === TaskStatus.PENDING) {
+      throw new HttpException(
+        {
+          errorCode: 'TaskNeverStarted',
+          description: 'Task is never started by any provider!',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    task.status = TaskStatus.COMPLETED
+    await this.dataSource.manager.save(TaskEntity, task);
+
+    return {
+      message: 'Task status updated successfully!'
+    }
   }
 }

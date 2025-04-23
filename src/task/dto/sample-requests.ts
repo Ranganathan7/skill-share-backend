@@ -1,5 +1,7 @@
 import { RateCurrency, SkillCategory } from "src/common/constants/constants";
 import { CreateTaskDto } from "./create-task.dto";
+import { UpdateTaskProgressDto } from "./update-progress.dto";
+import { UpdateTaskStatusDto } from "./update-status.dto";
 
 export const createTask: CreateTaskDto = {
   category: SkillCategory.FRONTEND,
@@ -10,4 +12,15 @@ export const createTask: CreateTaskDto = {
   hourlyRate: 500,
   rateCurrency: RateCurrency.INR,
   accountId: 1
+}
+
+export const updateTaskProgress: UpdateTaskProgressDto = {
+  taskId: 1,
+  description: "Initial setup completed, moving to development phase.",
+  accountId: 3,
+}
+
+export const updateTaskStatus: UpdateTaskStatusDto = {
+  taskId: 1,
+  accountId: 1,
 }
