@@ -43,9 +43,7 @@ export class TransformInterceptor<T>
     const apiResponse: CommonApiResponse<ApiSuccessResponse<typeof data>> = {
       statusCode,
       timestamp: new Date().toISOString(),
-      data: {
-        ...data,
-      },
+      data,
     };
     return apiResponse
   }

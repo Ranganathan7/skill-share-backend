@@ -1,11 +1,14 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiParam } from '@nestjs/swagger';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
@@ -29,5 +32,16 @@ export class TaskController {
   @ApiOperation(swaggerAPIOptions.createTask)
   async createTask(@Body() dto: CreateTaskDto) {
     return this.taskService.createTask(dto);
+  }
+
+  @Get('/get/:accountId')
+  @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    type: Number,
+    name: 'accountId'
+  })
+  @ApiOperation(swaggerAPIOptions.createTask)
+  async findTaskByAccount(@Param('accountId', ParseIntPipe) accountId: number) {
+    return this.taskService.findTasksByAccount(accountId)
   }
 }

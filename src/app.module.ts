@@ -9,6 +9,7 @@ import { TaskEntity } from './entities/task.entity';
 import { SkillEntity } from './entities/skill.entity';
 import { AccountModule } from './account/account.module';
 import { TaskModule } from './task/task.module';
+import { OfferModule } from './offer/offer.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { TaskModule } from './task/task.module';
     }),
     AccountModule,
     TaskModule,
+    OfferModule,
   ],
   controllers: [AppController],
   providers: [AppService],

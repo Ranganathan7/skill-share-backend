@@ -3,7 +3,6 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from "t
 import { TaskEntity } from "./task.entity";
 import { SkillEntity } from "./skill.entity";
 
-// Define Address as an embedded object (no separate entity needed)
 export class AddressEntity {
   @Column({ type: 'varchar', length: fieldConfig.streetNumber.length })
   streetNumber: string;
@@ -21,7 +20,6 @@ export class AddressEntity {
   postCode: string;
 }
 
-// Individual account fields
 export class IndividualAccountEntity {
   @Column({ type: 'varchar', length: fieldConfig.name.length })
   firstName: string;
@@ -36,7 +34,6 @@ export class IndividualAccountEntity {
   address: AddressEntity;
 }
 
-// Company accoung fields
 export class CompanyAccountEntity {
   @Column({ type: 'varchar', length: fieldConfig.name.length })
   companyName: string;
@@ -57,7 +54,6 @@ export class CompanyAccountEntity {
   address?: AddressEntity;
 }
 
-// AccountEntity (for both individual / company)
 @Entity({ name: 'accounts' })
 export class AccountEntity {
   @PrimaryGeneratedColumn()

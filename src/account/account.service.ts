@@ -3,7 +3,6 @@ import { DataSource } from 'typeorm';
 import { AccountEntity } from '../entities/account.entity';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { AccountType } from 'src/common/constants/constants';
-import { handleDatabaseError } from 'src/common/utils/handle-database-error';
 import { comparePasswords, hashPassword } from 'src/common/utils/hash-password';
 import { AuthAccountDto } from './dto/authenticate-account.dto';
 
@@ -43,13 +42,9 @@ export class AccountService {
       companyAccount: type === AccountType.COMPANY ? companyAccount : null,
     });
 
-    try {
-      await this.dataSource.manager.save(AccountEntity, account);
-      return {
-        message: 'Account created successfully!'
-      }
-    } catch (error) {
-      return handleDatabaseError(error)
+    await this.dataSource.manager.save(AccountEntity, account);
+    return {
+      message: 'Account created successfully!'
     }
   }
 

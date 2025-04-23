@@ -39,7 +39,7 @@ export class TaskEntity {
   @Column({ type: 'enum', enum: TaskStatus, default: TaskStatus.PENDING })
   status: TaskStatus;
 
-  @ManyToMany(() => AccountEntity, { nullable: true })
+  @ManyToMany(() => AccountEntity, (account) => account.tasksOffered, { nullable: true })
   @JoinTable() // This will create a join table between TaskEntity and AccountEntity
   offers?: AccountEntity[];
 

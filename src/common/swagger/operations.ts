@@ -12,5 +12,17 @@ export const swaggerAPIOptions = {
   createTask: {
     summary: 'Create task',
     description: 'This API is used to create a task (only for user)'
+  },
+  getTasks: {
+    summary: 'Get tasks',
+    description: 'This API returns all tasks the user has created / tasks that the provider has been offered'
+  },
+  makeOffer: {
+    summary: 'Make offer',
+    description: 'This API is used to make an offer to a task by a provider'
+  },
+  getOffers: {
+    summary: 'Get offers',
+    description: 'This API is used to fetch offers made by provider / offers received for a task created by user'
   }
 }

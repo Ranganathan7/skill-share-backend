@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { TaskEntity } from '../entities/task.entity';
@@ -15,6 +17,14 @@ export class TaskService {
 
   async createTask(completeDto: CreateTaskDto) {
     const { accountId, ...dto } = completeDto;
+
+    if (new Date(dto.expectedStartDate) < new Date(new Date().setHours(0, 0, 0, 0))) {
+      throw new BadRequestException({
+        errorCode: 'InvalidStartDate',
+        description: 'expectedStartDate must be today or a future date',
+      });
+    }
+
     const account = await this.dataSource.manager.findOne(AccountEntity, {
       where: { id: accountId },
     });
@@ -47,5 +57,24 @@ export class TaskService {
     return {
       message: 'Task created successfully!'
     }
+  }
+
+  async findTasksByAccount(accountId: number): Promise<TaskEntity[]> {
+    const tasks = await this.dataSource.manager.find(TaskEntity, {
+      where: [
+        { user: { id: accountId } },
+        { provider: { id: accountId } }
+      ],
+      relations: ['user', 'provider'],
+    })
+
+    if (tasks.length === 0) {
+      throw new NotFoundException({
+        errorCode: 'NoTasksFound',
+        description: 'Invalid account id / No tasks found for provided account id'
+      })
+    }
+
+    return tasks;
   }
 }
