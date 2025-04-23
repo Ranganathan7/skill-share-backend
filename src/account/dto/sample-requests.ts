@@ -1,8 +1,12 @@
-export const createIndividualUserAccount = {
+import { AccountRoles, AccountType } from "src/common/constants/constants"
+import { CreateAccountDto } from "./create-account.dto"
+import { AuthAccountDto } from "./authenticate-account.dto"
+
+export const createIndividualUserAccount: CreateAccountDto = {
   "email": "user.jane@example.com",
   "password": "userJane123",
-  "role": "USER",
-  "type": "INDIVIDUAL",
+  "role": AccountRoles.USER,
+  "type": AccountType.INDIVIDUAL,
   "individualAccount": {
     "firstName": "Jane",
     "lastName": "Doe",
@@ -17,11 +21,11 @@ export const createIndividualUserAccount = {
   }
 }
 
-export const createIndividualProviderAccount = {
+export const createIndividualProviderAccount: CreateAccountDto = {
   "email": "provider.john@example.com",
   "password": "provJohn321",
-  "role": "PROVIDER",
-  "type": "INDIVIDUAL",
+  "role": AccountRoles.PROVIDER,
+  "type": AccountType.INDIVIDUAL,
   "individualAccount": {
     "firstName": "John",
     "lastName": "Smith",
@@ -36,11 +40,11 @@ export const createIndividualProviderAccount = {
   }
 }
 
-export const createCompanyUserAccount = {
+export const createCompanyUserAccount: CreateAccountDto = {
   "email": "company.user@example.com",
   "password": "compUser789",
-  "role": "USER",
-  "type": "COMPANY",
+  "role": AccountRoles.USER,
+  "type": AccountType.COMPANY,
   "companyAccount": {
     "companyName": "GreenTech Ltd.",
     "representativeFirstName": "Emily",
@@ -57,11 +61,11 @@ export const createCompanyUserAccount = {
   }
 }
 
-export const createCompanyProviderAccount = {
+export const createCompanyProviderAccount: CreateAccountDto = {
   "email": "service@buildpro.com",
   "password": "buildPro999",
-  "role": "PROVIDER",
-  "type": "COMPANY",
+  "role": AccountRoles.PROVIDER,
+  "type": AccountType.COMPANY,
   "companyAccount": {
     "companyName": "BuildPro Services",
     "representativeFirstName": "Michael",
@@ -78,7 +82,7 @@ export const createCompanyProviderAccount = {
   }
 }
 
-export const authenticateAccount = {
+export const authenticateAccount: AuthAccountDto = {
   email: createIndividualProviderAccount.email,
   password: createIndividualProviderAccount.password,
 }

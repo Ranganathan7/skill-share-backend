@@ -45,7 +45,6 @@ export class TransformInterceptor<T>
       timestamp: new Date().toISOString(),
       data: {
         ...data,
-        message: data.message ?? 'Success!'
       },
     };
     return apiResponse

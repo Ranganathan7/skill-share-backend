@@ -8,6 +8,7 @@ import { AccountEntity } from './entities/account.entity';
 import { TaskEntity } from './entities/task.entity';
 import { SkillEntity } from './entities/skill.entity';
 import { AccountModule } from './account/account.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AccountModule } from './account/account.module';
       }),
     }),
     AccountModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],

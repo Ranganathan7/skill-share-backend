@@ -40,6 +40,7 @@ export const fieldConfig = {
   password: {
     minLength: 8,
     length: 20,
+    hashedLength: 250,
     regex: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
   },
   streetNumber: {
@@ -78,7 +79,7 @@ export const fieldConfig = {
     regex: '^[A-Z0-9]{10}$',  // regex for business tax number (uppercase letters + numbers)
   },
   taskName: {
-    length: 20
+    length: 50
   },
   taskDescription: {
     length: 100

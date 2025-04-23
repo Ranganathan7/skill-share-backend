@@ -66,7 +66,7 @@ export class AccountEntity {
   @Column({ unique: true, type: 'varchar', length: fieldConfig.email.length })
   email: string;
 
-  @Column({ type: 'varchar', length: fieldConfig.password.length })
+  @Column({ type: 'varchar', length: fieldConfig.password.hashedLength })
   password: string;
 
   @Column({ type: 'enum', enum: AccountRoles })

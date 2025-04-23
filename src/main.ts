@@ -4,6 +4,8 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { swaggerConstants } from './common/constants/constants';
 import { ValidationPipe } from '@nestjs/common';
+import { CustomExceptionFilter } from './common/filters/custom-exception.filter';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +24,12 @@ async function bootstrap() {
 
   // Enable validation pipe to apply any param/class validations
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
+  // Registering global exception handler
+  app.useGlobalFilters(new CustomExceptionFilter());
+
+  // Registering global response transform interceptor
+  app.useGlobalInterceptors(new TransformInterceptor())
 
   await app.listen(configService.get<number>('app.port') ?? 3000);
 }
