@@ -24,5 +24,9 @@ export const swaggerAPIOptions = {
   getOffers: {
     summary: 'Get offers',
     description: 'This API is used to fetch offers made by provider / offers received for a task created by user'
+  },
+  acceptOffer: {
+    summary: 'Accept offer',
+    description: 'This API is used to accept an offer from provider by the user'
   }
 }
