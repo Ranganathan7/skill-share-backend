@@ -10,6 +10,11 @@ import { SkillService } from './skill.service';
 export class SkillController {
   constructor(private readonly skillService: SkillService) { }
 
+  /**
+   * Endpoint to add or update a skill for a given account.
+   * Accepts skill details and the account ID as input.
+   * Returns the updated list of skills for the account.
+   */
   @Post('/add-update/:accountId')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation(swaggerAPIOptions.addUpdateSkill)
@@ -25,10 +30,17 @@ export class SkillController {
     type: Number,
     name: 'accountId'
   })
-  async addOrUpdate(@Body() dto: AddUpdateSkillDto, @Param('accountId', ParseIntPipe) accountId: number) {
+  async addOrUpdate(
+    @Body() dto: AddUpdateSkillDto,
+    @Param('accountId', ParseIntPipe) accountId: number,
+  ) {
     return this.skillService.addOrUpdate(accountId, dto);
   }
 
+  /**
+   * Endpoint to retrieve all skills associated with a given account ID.
+   * Returns an array of skill objects if found.
+   */
   @Get('/get/:accountId')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
@@ -37,6 +49,6 @@ export class SkillController {
   })
   @ApiOperation(swaggerAPIOptions.getSkills)
   async getSkills(@Param('accountId', ParseIntPipe) accountId: number) {
-    return this.skillService.getSkills(accountId)
+    return this.skillService.getSkills(accountId);
   }
 }

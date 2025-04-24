@@ -9,8 +9,13 @@ import { AccountRoles } from 'src/common/constants/constants';
 export class SkillService {
   constructor(private readonly dataSource: DataSource) { }
 
+  /**
+   * Adds a new skill or updates an existing one for a provider account.
+   * Validates the account existence and role before proceeding.
+   * If a skill with the same category already exists, updates it.
+   * Otherwise, creates a new skill entry for the provider.
+   */
   async addOrUpdate(providerId: number, dto: AddUpdateSkillDto) {
-    // Check if account id is valid
     const account = await this.dataSource.manager.findOne(AccountEntity, {
       where: { id: providerId },
     });
@@ -25,7 +30,6 @@ export class SkillService {
       );
     }
 
-    // Only provider can add / update skill
     if (account.role !== AccountRoles.PROVIDER) {
       throw new HttpException(
         {
@@ -36,20 +40,17 @@ export class SkillService {
       );
     }
 
-    // Check if the provider already has a skill in the same category
     const existingSkill = await this.dataSource.manager.findOne(SkillEntity, {
       where: { account: { id: providerId }, category: dto.category },
       relations: ['account'],
     });
 
     if (existingSkill) {
-      // If skill already exists, update it with new details
       existingSkill.experience = dto.experience;
       existingSkill.natureOfWork = dto.natureOfWork;
       existingSkill.hourlyRate = dto.hourlyRate;
       existingSkill.rateCurrency = dto.rateCurrency;
 
-      // Save the updated skill
       await this.dataSource.manager.save(SkillEntity, existingSkill);
 
       return {
@@ -57,18 +58,20 @@ export class SkillService {
       };
     }
 
-    // If skill does not exist, create a new one
     const newSkill = new SkillEntity();
-    newSkill.account = account; // Associate the skill with the provider's account
+    newSkill.account = account;
     Object.assign(newSkill, dto);
 
-    // Save the new skill
     await this.dataSource.manager.save(SkillEntity, newSkill);
     return {
       message: 'Added new skill!',
     };
   }
 
+  /**
+   * Retrieves all skills associated with the given account ID.
+   * Returns an array of skill objects if found.
+   */
   async getSkills(accountId: number): Promise<SkillEntity[]> {
     const skills = await this.dataSource.manager.find(SkillEntity, {
       where: { account: { id: accountId } },
