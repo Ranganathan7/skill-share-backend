@@ -20,6 +20,11 @@ import { AcceptOfferDto } from './dto/accept-offer.dto';
 export class OfferController {
   constructor(private readonly offerService: OfferService) { }
 
+  /**
+   * Endpoint to make an offer for a task.
+   * Only providers can make offers.
+   * Returns success message or error if invalid.
+   */
   @Post('make')
   @HttpCode(HttpStatus.OK)
   @ApiBody({
@@ -35,6 +40,11 @@ export class OfferController {
     return this.offerService.makeOffer(dto.accountId, dto.taskId);
   }
 
+  /**
+   * Endpoint to fetch offers for a given account.
+   * - If provider: returns tasks they offered for (excluding accepted).
+   * - If user: returns their posted tasks with pending offers (excluding one's for which offer is accepted)
+   */
   @Get('/get/:accountId')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
@@ -43,9 +53,14 @@ export class OfferController {
   })
   @ApiOperation(swaggerAPIOptions.getOffers)
   async getOffersForaccount(@Param('accountId', ParseIntPipe) accountId: number) {
-    return this.offerService.getOffersForAccount(accountId)
+    return this.offerService.getOffersForAccount(accountId);
   }
 
+  /**
+   * Endpoint to accept an offer from a provider.
+   * Only task owners can accept an offer.
+   * Returns success message or error if already accepted.
+   */
   @Post('accept')
   @HttpCode(HttpStatus.OK)
   @ApiBody({
@@ -58,6 +73,7 @@ export class OfferController {
   })
   @ApiOperation(swaggerAPIOptions.acceptOffer)
   async acceptOffer(@Body() dto: AcceptOfferDto) {
-    return this.offerService.acceptOffer(dto)
+    return this.offerService.acceptOffer(dto);
   }
 }
+

@@ -23,8 +23,6 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<ApiSuccessResponse<T>> {
-    const ctx = context.switchToHttp();
-    const request = ctx.getRequest();
     const statusCode = context
       .switchToHttp()
       .getResponse().statusCode;

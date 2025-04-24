@@ -13,6 +13,12 @@ import { AcceptOfferDto } from './dto/accept-offer.dto';
 export class OfferService {
   constructor(private readonly dataSource: DataSource) { }
 
+  /**
+   * Method to make an offer for a task.
+   * - Validates if task exists and if an offer has already been accepted.
+   * - Checks if the account is a provider and has not already made an offer for this task.
+   * Returns updated task with the new offer added.
+   */
   async makeOffer(accountId: number, taskId: number): Promise<TaskEntity> {
     const task = await this.dataSource.manager.findOne(TaskEntity, {
       where: { id: taskId },
@@ -67,6 +73,12 @@ export class OfferService {
     return this.dataSource.manager.save(TaskEntity, task);
   }
 
+  /**
+   * Method to retrieve all offers for a given account.
+   * - If provider: returns tasks they offered for, excluding tasks with accepted offers.
+   * - If user: returns their posted tasks with pending offers.
+   * Returns tasks with relevant offer details based on the account's role.
+   */
   async getOffersForAccount(accountId: number) {
     const account = await this.dataSource.manager.findOne(AccountEntity, {
       where: { id: accountId },
@@ -116,6 +128,12 @@ export class OfferService {
     }
   }
 
+  /**
+   * Method to accept an offer for a task.
+   * - Verifies if the task exists, if the user has the correct permissions (task creator), and if the task is not already assigned.
+   * - Validates if the provider exists in the offers list before assigning the offer and changing task status.
+   * Returns success message if offer is accepted successfully.
+   */
   async acceptOffer(dto: AcceptOfferDto) {
     const { userId, providerId, taskId } = dto;
 
@@ -161,5 +179,5 @@ export class OfferService {
       message: 'Offer accepted successfully!'
     }
   }
+}
 
-} 
