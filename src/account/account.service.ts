@@ -10,9 +10,15 @@ import { AuthAccountDto } from './dto/authenticate-account.dto';
 export class AccountService {
   constructor(private readonly dataSource: DataSource) { }
 
+  /**
+   * Creates a new account based on the provided details.
+   * Validates the account type and required fields, hashes the password,
+   * and saves the account to the database.
+   */
   async create(dto: CreateAccountDto) {
     const { password, type, individualAccount, companyAccount, ...baseFields } = dto;
 
+    // Validate presence of individual details for INDIVIDUAL type
     if (type === AccountType.INDIVIDUAL && !individualAccount) {
       throw new HttpException(
         {
@@ -23,6 +29,7 @@ export class AccountService {
       );
     }
 
+    // Validate presence of company details for COMPANY type
     if (type === AccountType.COMPANY && !companyAccount) {
       throw new HttpException(
         {
@@ -33,8 +40,9 @@ export class AccountService {
       );
     }
 
+    // Create and prepare the account entity
     const account = new AccountEntity();
-    const hashedPassword = await hashPassword(password)
+    const hashedPassword = await hashPassword(password);
     Object.assign(account, baseFields, {
       password: hashedPassword,
       type,
@@ -42,15 +50,22 @@ export class AccountService {
       companyAccount: type === AccountType.COMPANY ? companyAccount : null,
     });
 
+    // Save the account
     await this.dataSource.manager.save(AccountEntity, account);
     return {
-      message: 'Account created successfully!'
-    }
+      message: 'Account created successfully!',
+    };
   }
 
+  /**
+   * Authenticates an account using email and password.
+   * Returns the account entity if credentials are valid.
+   * Throws HTTP exceptions for invalid email or password.
+   */
   async authenticate(dto: AuthAccountDto): Promise<AccountEntity> {
     const { email, password } = dto;
 
+    // Look up the account by email
     const account = await this.dataSource.manager.findOne(AccountEntity, {
       where: { email },
     });
@@ -65,6 +80,7 @@ export class AccountService {
       );
     }
 
+    // Compare hashed password
     const isPasswordValid = await comparePasswords(password, account.password);
     if (!isPasswordValid) {
       throw new HttpException(

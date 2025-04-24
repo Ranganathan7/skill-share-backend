@@ -1,40 +1,58 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, ValidateNested, Length, IsString } from 'class-validator';
+import {
+  IsEnum, IsNotEmpty, IsOptional,
+  ValidateNested, MaxLength, MinLength,
+  Matches
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { AccountRoles, AccountType, fieldConfig } from 'src/common/constants/constants';
 import { ApiProperty } from '@nestjs/swagger';
 
 class AddressDto {
   @IsNotEmpty()
+  @MaxLength(fieldConfig.streetNumber.length)
+  @Matches(fieldConfig.streetNumber.regex)
   @ApiProperty({ required: true, type: String })
   streetNumber: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.streetName.length)
+  @Matches(fieldConfig.streetName.regex)
   @ApiProperty({ required: true, type: String })
   streetName: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.city.length)
+  @Matches(fieldConfig.city.regex)
   @ApiProperty({ required: true, type: String })
   city: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.state.length)
+  @Matches(fieldConfig.state.regex)
   @ApiProperty({ required: true, type: String })
   state: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.postCode.length)
+  @Matches(fieldConfig.postCode.regex)
   @ApiProperty({ required: true, type: String })
   postCode: string;
 }
 
 class IndividualAccountDto {
   @IsNotEmpty()
+  @MaxLength(fieldConfig.name.length)
   @ApiProperty({ required: true, type: String })
   firstName: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.name.length)
   @ApiProperty({ required: true, type: String })
   lastName: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.mobileNumber.length)
+  @Matches(fieldConfig.mobileNumber.regex)
   @ApiProperty({ required: true, type: String })
   mobileNumber: string;
 
@@ -46,22 +64,29 @@ class IndividualAccountDto {
 
 class CompanyAccountDto {
   @IsNotEmpty()
+  @MaxLength(fieldConfig.name.length)
   @ApiProperty({ required: true, type: String })
   companyName: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.name.length)
   @ApiProperty({ required: true, type: String })
   representativeFirstName: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.name.length)
   @ApiProperty({ required: true, type: String })
   representativeLastName: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.phoneNumber.length)
+  @Matches(fieldConfig.phoneNumber.regex)
   @ApiProperty({ required: true, type: String })
   phoneNumber: string;
 
   @IsNotEmpty()
+  @MaxLength(fieldConfig.businessTaxNumber.length)
+  @Matches(fieldConfig.businessTaxNumber.regex)
   @ApiProperty({ required: true, type: String })
   businessTaxNumber: string;
 
@@ -73,11 +98,15 @@ class CompanyAccountDto {
 }
 
 export class CreateAccountDto {
-  @IsEmail()
+  @IsNotEmpty()
+  @MaxLength(fieldConfig.email.length)
+  @Matches(fieldConfig.email.regex)
   @ApiProperty({ required: true, type: String })
   email: string;
 
-  @Length(fieldConfig.password.minLength, fieldConfig.password.length)
+  @MinLength(fieldConfig.password.minLength)
+  @MaxLength(fieldConfig.password.length)
+  @Matches(fieldConfig.password.regex)
   @ApiProperty({ required: true, type: String })
   password: string;
 
@@ -89,7 +118,7 @@ export class CreateAccountDto {
   @ApiProperty({ required: true, enum: AccountType })
   type: AccountType;
 
-  @ApiProperty({ required: false, type: String })
+  @ApiProperty({ required: false, type: IndividualAccountDto })
   @ValidateNested()
   @Type(() => IndividualAccountDto)
   @IsOptional()

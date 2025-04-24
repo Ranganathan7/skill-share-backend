@@ -75,8 +75,8 @@ export const fieldConfig = {
     regex: '^[0-9]{10,15}$',
   },
   businessTaxNumber: {
-    length: 10,  // fixed length for business tax number (arbitrary 10-character string)
-    regex: '^[A-Z0-9]{10}$',  // regex for business tax number (uppercase letters + numbers)
+    length: 10,
+    regex: '^[A-Z0-9]{10}$',
   },
   taskName: {
     length: 50
