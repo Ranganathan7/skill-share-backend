@@ -21,6 +21,11 @@ import { UpdateTaskStatusDto } from './dto/update-status.dto';
 export class TaskController {
   constructor(private readonly taskService: TaskService) { }
 
+  /**
+   * Endpoint to create a new task.
+   * Accepts task details and associates it with the user account.
+   * Returns the created task on success.
+   */
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({
@@ -36,6 +41,10 @@ export class TaskController {
     return this.taskService.createTask(dto);
   }
 
+  /**
+   * Endpoint to fetch all tasks related to an account.
+   * Returns tasks posted by or assigned to the account.
+   */
   @Get('/get/:accountId')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
@@ -47,6 +56,11 @@ export class TaskController {
     return this.taskService.findTasksByAccount(accountId)
   }
 
+  /**
+   * Endpoint for provider to update progress of an ongoing task.
+   * Accepts task ID and new progress value.
+   * Returns updated task status on success.
+   */
   @Post('update-progress')
   @HttpCode(HttpStatus.OK)
   @ApiBody({
@@ -62,6 +76,10 @@ export class TaskController {
     return this.taskService.updateProgress(dto);
   }
 
+  /**
+   * Endpoint for user to update the final status of a task.
+   * Typically used to mark the task as completed.
+   */
   @Post('update-status')
   @HttpCode(HttpStatus.OK)
   @ApiBody({

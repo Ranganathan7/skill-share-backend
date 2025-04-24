@@ -17,6 +17,11 @@ import { UpdateTaskStatusDto } from './dto/update-status.dto';
 export class TaskService {
   constructor(private readonly dataSource: DataSource) { }
 
+  /**
+   * Creates a new task and associates it with a user.
+   * Validates that start date is not in the past.
+   * Only users (not providers) are allowed to create tasks.
+   */
   async createTask(completeDto: CreateTaskDto) {
     const { accountId, ...dto } = completeDto;
 
@@ -61,6 +66,10 @@ export class TaskService {
     }
   }
 
+  /**
+   * Returns all tasks created by or assigned to a given account.
+   * Throws an error if no tasks are found.
+   */
   async findTasksByAccount(accountId: number): Promise<TaskEntity[]> {
     const tasks = await this.dataSource.manager.find(TaskEntity, {
       where: [
@@ -80,6 +89,11 @@ export class TaskService {
     return tasks;
   }
 
+  /**
+   * Allows a provider to log progress on a task.
+   * Validates task ownership and ensures task is not already completed.
+   * Appends progress entry to the task.
+   */
   async updateProgress(dto: UpdateTaskProgressDto) {
     const { taskId, description, accountId } = dto;
 
@@ -129,6 +143,10 @@ export class TaskService {
     }
   }
 
+  /**
+   * Allows the user who created the task to mark it as completed.
+   * Validates user ownership, ensures task has been started and is not already completed.
+   */
   async updateStatus(dto: UpdateTaskStatusDto) {
     const { taskId, accountId } = dto;
 
