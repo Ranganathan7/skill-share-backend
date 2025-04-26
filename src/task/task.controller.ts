@@ -1,15 +1,12 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
-  Param,
-  ParseIntPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
@@ -17,6 +14,7 @@ import { createTask, updateTaskProgress, updateTaskStatus } from './dto/sample-r
 import { UpdateTaskProgressDto } from './dto/update-progress.dto';
 import { UpdateTaskStatusDto } from './dto/update-status.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { GetTasksDto } from './dto/get-tasks.dto';
 
 @ApiTags('Task related services')
 @Controller('task')
@@ -49,15 +47,11 @@ export class TaskController {
    * Endpoint to fetch all tasks related to an account.
    * Returns tasks posted by or assigned to the account.
    */
-  @Get('/get/:accountId')
+  @Post('/get')
   @HttpCode(HttpStatus.OK)
-  @ApiParam({
-    type: Number,
-    name: 'accountId'
-  })
-  @ApiOperation(swaggerAPIOptions.createTask)
-  async findTaskByAccount(@Param('accountId', ParseIntPipe) accountId: number) {
-    return this.taskService.findTasksByAccount(accountId)
+  @ApiOperation(swaggerAPIOptions.getTasks)
+  async findTaskByAccount(@Body() dto: GetTasksDto) {
+    return this.taskService.findTasksByAccount(dto.accountId)
   }
 
   /**
