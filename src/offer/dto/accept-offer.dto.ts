@@ -2,10 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsPositive } from 'class-validator';
 
 export class AcceptOfferDto {
-  @ApiProperty()
   @IsInt()
   @IsPositive()
-  userId: number;
+  accountId: number; // Filled from auth guard
 
   @ApiProperty()
   @IsInt()

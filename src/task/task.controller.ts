@@ -7,17 +7,21 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
 import { createTask, updateTaskProgress, updateTaskStatus } from './dto/sample-requests';
 import { UpdateTaskProgressDto } from './dto/update-progress.dto';
 import { UpdateTaskStatusDto } from './dto/update-status.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @ApiTags('Task related services')
 @Controller('task')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class TaskController {
   constructor(private readonly taskService: TaskService) { }
 

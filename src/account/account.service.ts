@@ -5,10 +5,11 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { AccountType } from 'src/common/constants/constants';
 import { comparePasswords, hashPassword } from 'src/common/utils/hash-password';
 import { AuthAccountDto } from './dto/authenticate-account.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AccountService {
-  constructor(private readonly dataSource: DataSource) { }
+  constructor(private readonly dataSource: DataSource, private readonly jwtService: JwtService) { }
 
   /**
    * Creates a new account based on the provided details.
@@ -62,7 +63,7 @@ export class AccountService {
    * Returns the account entity if credentials are valid.
    * Throws HTTP exceptions for invalid email or password.
    */
-  async authenticate(dto: AuthAccountDto): Promise<AccountEntity> {
+  async authenticate(dto: AuthAccountDto): Promise<AccountEntity & { accessToken: string }> {
     const { email, password } = dto;
 
     // Look up the account by email
@@ -92,6 +93,16 @@ export class AccountService {
       );
     }
 
-    return account;
+    // generating JWT token
+    const accessToken = this.jwtService.sign({
+      accountId: account.id,
+      role: account.role,
+      type: account.type
+    })
+
+    return {
+      ...account,
+      accessToken,
+    };
   }
 }

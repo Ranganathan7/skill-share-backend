@@ -62,7 +62,7 @@ export class AccountController {
       }
     }
   })
-  async authenticate(@Body() dto: AuthAccountDto): Promise<AccountEntity> {
+  async authenticate(@Body() dto: AuthAccountDto) {
     return this.accountService.authenticate(dto);
   }
 }

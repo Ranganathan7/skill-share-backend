@@ -1,22 +1,24 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
-  Param,
-  ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
 import { OfferService } from './offer.service';
 import { MakeOfferDto } from './dto/make-offer.dto';
 import { acceptOffer, makeOffer } from './dto/sample-requests';
 import { AcceptOfferDto } from './dto/accept-offer.dto';
+import { GetOffersDto } from './dto/get-offers.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @ApiTags('Offer related services')
 @Controller('offer')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class OfferController {
   constructor(private readonly offerService: OfferService) { }
 
@@ -45,15 +47,11 @@ export class OfferController {
    * - If provider: returns tasks they offered for (excluding accepted).
    * - If user: returns their posted tasks with pending offers (excluding one's for which offer is accepted)
    */
-  @Get('/get/:accountId')
+  @Post('/get')
   @HttpCode(HttpStatus.OK)
-  @ApiParam({
-    type: Number,
-    name: 'accountId'
-  })
   @ApiOperation(swaggerAPIOptions.getOffers)
-  async getOffersForaccount(@Param('accountId', ParseIntPipe) accountId: number) {
-    return this.offerService.getOffersForAccount(accountId);
+  async getOffersForaccount(@Body() dto: GetOffersDto) {
+    return this.offerService.getOffersForAccount(dto.accountId);
   }
 
   /**

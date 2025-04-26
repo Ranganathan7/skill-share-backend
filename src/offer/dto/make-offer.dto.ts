@@ -5,10 +5,9 @@ import {
 } from 'class-validator';
 
 export class MakeOfferDto {
-  @ApiProperty()
   @IsInt()
   @IsPositive()
-  accountId: number;
+  accountId: number; // Filled from auth guard
 
   @ApiProperty()
   @IsInt()

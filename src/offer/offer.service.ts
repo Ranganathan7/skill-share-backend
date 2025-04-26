@@ -135,7 +135,7 @@ export class OfferService {
    * Returns success message if offer is accepted successfully.
    */
   async acceptOffer(dto: AcceptOfferDto) {
-    const { userId, providerId, taskId } = dto;
+    const { accountId: userId, providerId, taskId } = dto;
 
     const task = await this.dataSource.manager.findOne(TaskEntity, {
       where: { id: taskId },

@@ -11,6 +11,7 @@ import { AccountModule } from './account/account.module';
 import { TaskModule } from './task/task.module';
 import { OfferModule } from './offer/offer.module';
 import { SkillModule } from './skill/skill.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { SkillModule } from './skill/skill.module';
         synchronize: config.get<boolean>('database.synchronize'),
       }),
     }),
+    AuthModule,
     AccountModule,
     TaskModule,
     OfferModule,
