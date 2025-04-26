@@ -1,10 +1,11 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
 import { AddUpdateSkillDto } from './dto/add-update-skill.dto';
 import { addSkill } from './dto/sample-requests';
 import { SkillService } from './skill.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { GetSkillsDto } from './dto/get-skills.dto';
 
 @Controller('skills')
 @ApiTags('Skill related services')
@@ -18,7 +19,7 @@ export class SkillController {
    * Accepts skill details and the account ID as input.
    * Returns the updated list of skills for the account.
    */
-  @Post('/add-update/:accountId')
+  @Post('/add-update')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation(swaggerAPIOptions.addUpdateSkill)
   @ApiBody({
@@ -29,29 +30,18 @@ export class SkillController {
       },
     }
   })
-  @ApiParam({
-    type: Number,
-    name: 'accountId'
-  })
-  async addOrUpdate(
-    @Body() dto: AddUpdateSkillDto,
-    @Param('accountId', ParseIntPipe) accountId: number,
-  ) {
-    return this.skillService.addOrUpdate(accountId, dto);
+  async addOrUpdate(@Body() dto: AddUpdateSkillDto) {
+    return this.skillService.addOrUpdate(dto.accountId, dto);
   }
 
   /**
    * Endpoint to retrieve all skills associated with a given account ID.
    * Returns an array of skill objects if found.
    */
-  @Get('/get/:accountId')
+  @Post('/get')
   @HttpCode(HttpStatus.OK)
-  @ApiParam({
-    type: Number,
-    name: 'accountId'
-  })
   @ApiOperation(swaggerAPIOptions.getSkills)
-  async getSkills(@Param('accountId', ParseIntPipe) accountId: number) {
-    return this.skillService.getSkills(accountId);
+  async getSkills(@Body() dto: GetSkillsDto) {
+    return this.skillService.getSkills(dto.accountId);
   }
 }

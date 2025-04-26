@@ -1,8 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsPositive } from 'class-validator';
+import { IsEnum, IsInt, IsNumber, IsPositive } from 'class-validator';
 import { NatureOfWork, RateCurrency, SkillCategory } from 'src/common/constants/constants';
 
 export class AddUpdateSkillDto {
+  @IsInt()
+  @IsPositive()
+  accountId: number; // Filled from auth guard
+
   @ApiProperty({ enum: SkillCategory })
   @IsEnum(SkillCategory)
   category: SkillCategory;
