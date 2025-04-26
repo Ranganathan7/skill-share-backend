@@ -2,13 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsPositive } from 'class-validator';
 
 export class UpdateTaskStatusDto {
-  @ApiProperty()
   @IsInt()
   @IsPositive()
-  taskId: number;
+  accountId: number; // Filled from auth guard
 
   @ApiProperty()
   @IsInt()
   @IsPositive()
-  accountId: number;
+  taskId: number;
 }

@@ -2,6 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsPositive, IsString } from 'class-validator';
 
 export class UpdateTaskProgressDto {
+  @IsInt()
+  @IsPositive()
+  accountId: number; // Filled from auth guard
+
   @ApiProperty()
   @IsInt()
   @IsPositive()
@@ -10,9 +14,4 @@ export class UpdateTaskProgressDto {
   @ApiProperty()
   @IsString()
   description: string;
-
-  @ApiProperty()
-  @IsInt()
-  @IsPositive()
-  accountId: number;
 }

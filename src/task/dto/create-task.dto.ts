@@ -16,10 +16,9 @@ import {
 import { createTask } from './sample-requests';
 
 export class CreateTaskDto {
-  @ApiProperty()
   @IsInt()
   @IsPositive()
-  accountId: number;
+  accountId: number; // Filled from auth guard
 
   @ApiProperty({ enum: SkillCategory })
   @IsEnum(SkillCategory)
