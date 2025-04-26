@@ -64,7 +64,7 @@ export class AccountService {
    * Returns the access token if credentials are valid.
    * Throws HTTP exceptions for invalid email or password.
    */
-  async authenticate(dto: AuthAccountDto): Promise<{ accessToken: string, accountId: number }> {
+  async authenticate(dto: AuthAccountDto): Promise<{ accessToken: string, accountId: number, name: string }> {
     const { email, password } = dto;
 
     // Look up the account by email
@@ -103,7 +103,8 @@ export class AccountService {
 
     return {
       accessToken,
-      accountId: account.id
+      accountId: account.id,
+      name: (account.companyAccount?.companyName || account.individualAccount?.firstName)?.concat(account.individualAccount?.lastName ?? '') ?? ''
     };
   }
 
