@@ -1,7 +1,7 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
 import {
   authenticateAccount,
@@ -11,7 +11,8 @@ import {
   createIndividualUserAccount
 } from './dto/sample-requests';
 import { AuthAccountDto } from './dto/authenticate-account.dto';
-import { AccountEntity } from 'src/entities/account.entity';
+import { GetAccountDto } from './dto/get-account.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @Controller('accounts')
 @ApiTags('Account related services')
@@ -49,7 +50,7 @@ export class AccountController {
 
   /**
    * Endpoint to authenticate an account using email and password.
-   * Returns the account details if authentication is successful.
+   * Returns the access token if authentication is successful.
    */
   @Post('authenticate')
   @HttpCode(HttpStatus.OK)
@@ -64,5 +65,18 @@ export class AccountController {
   })
   async authenticate(@Body() dto: AuthAccountDto) {
     return this.accountService.authenticate(dto);
+  }
+
+  /**
+   * Endpoint to get account details after login
+   * Returns the account details
+   */
+  @Post('get')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation(swaggerAPIOptions.getAccount)
+  async get(@Body() dto: GetAccountDto) {
+    return this.accountService.get(dto);
   }
 }

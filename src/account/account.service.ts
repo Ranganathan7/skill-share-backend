@@ -6,6 +6,7 @@ import { AccountType } from 'src/common/constants/constants';
 import { comparePasswords, hashPassword } from 'src/common/utils/hash-password';
 import { AuthAccountDto } from './dto/authenticate-account.dto';
 import { JwtService } from '@nestjs/jwt';
+import { GetAccountDto } from './dto/get-account.dto';
 
 @Injectable()
 export class AccountService {
@@ -60,10 +61,10 @@ export class AccountService {
 
   /**
    * Authenticates an account using email and password.
-   * Returns the account entity if credentials are valid.
+   * Returns the access token if credentials are valid.
    * Throws HTTP exceptions for invalid email or password.
    */
-  async authenticate(dto: AuthAccountDto): Promise<AccountEntity & { accessToken: string }> {
+  async authenticate(dto: AuthAccountDto): Promise<{ accessToken: string }> {
     const { email, password } = dto;
 
     // Look up the account by email
@@ -101,8 +102,29 @@ export class AccountService {
     })
 
     return {
-      ...account,
       accessToken,
     };
+  }
+
+  /**
+   * Return account details if account found
+   */
+  async get(dto: GetAccountDto): Promise<AccountEntity> {
+    // Look up the account by id
+    const account = await this.dataSource.manager.findOne(AccountEntity, {
+      where: { id: dto.accountId }
+    });
+
+    if (!account) {
+      throw new HttpException(
+        {
+          errorCode: 'AccountNotFound',
+          description: 'No account found with the provided email',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return account;
   }
 }
