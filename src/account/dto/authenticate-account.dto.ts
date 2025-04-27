@@ -6,7 +6,7 @@ import {
   Matches,
   IsNotEmpty
 } from 'class-validator';
-import { fieldConfig } from 'src/common/constants/constants';
+import { fieldConfig } from '../../common/constants/constants';
 
 export class AuthAccountDto {
   @ApiProperty({ required: true, type: String })

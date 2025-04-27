@@ -4,10 +4,10 @@ import {
   Matches
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { AccountRoles, AccountType, fieldConfig } from 'src/common/constants/constants';
+import { AccountRoles, AccountType, fieldConfig } from '../../common/constants/constants';
 import { ApiProperty } from '@nestjs/swagger';
 
-class AddressDto {
+export class AddressDto {
   @IsNotEmpty()
   @MaxLength(fieldConfig.streetNumber.length)
   @Matches(fieldConfig.streetNumber.regex)
@@ -39,7 +39,7 @@ class AddressDto {
   postCode: string;
 }
 
-class IndividualAccountDto {
+export class IndividualAccountDto {
   @IsNotEmpty()
   @MaxLength(fieldConfig.name.length)
   @ApiProperty({ required: true, type: String })
@@ -62,7 +62,7 @@ class IndividualAccountDto {
   address: AddressDto;
 }
 
-class CompanyAccountDto {
+export class CompanyAccountDto {
   @IsNotEmpty()
   @MaxLength(fieldConfig.name.length)
   @ApiProperty({ required: true, type: String })

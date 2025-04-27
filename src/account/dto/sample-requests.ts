@@ -1,4 +1,4 @@
-import { AccountRoles, AccountType } from "src/common/constants/constants"
+import { AccountRoles, AccountType } from "../../common/constants/constants"
 import { CreateAccountDto } from "./create-account.dto"
 import { AuthAccountDto } from "./authenticate-account.dto"
 

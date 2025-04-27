@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { AddUpdateSkillDto } from './dto/add-update-skill.dto';
-import { SkillEntity } from 'src/entities/skill.entity';
-import { AccountEntity } from 'src/entities/account.entity';
-import { AccountRoles } from 'src/common/constants/constants';
+import { SkillEntity } from '../entities/skill.entity';
+import { AccountEntity } from '../entities/account.entity';
+import { AccountRoles } from '../common/constants/constants';
 
 @Injectable()
 export class SkillService {

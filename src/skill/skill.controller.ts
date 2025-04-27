@@ -1,12 +1,12 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { swaggerAPIOptions } from 'src/common/swagger/operations';
+import { swaggerAPIOptions } from '../common/swagger/operations';
 import { AddUpdateSkillDto } from './dto/add-update-skill.dto';
 import { addSkill } from './dto/sample-requests';
 import { SkillService } from './skill.service';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { GetSkillsDto } from './dto/get-skills.dto';
-import { headers } from 'src/common/constants/constants';
+import { headers } from '../common/constants/constants';
 
 @Controller('skills')
 @ApiTags('Skill related services')

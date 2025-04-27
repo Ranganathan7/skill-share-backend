@@ -9,7 +9,7 @@ import { DataSource } from 'typeorm';
 import { TaskEntity } from '../entities/task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { AccountEntity } from '../entities/account.entity';
-import { AccountRoles, TaskStatus } from 'src/common/constants/constants';
+import { AccountRoles, TaskStatus } from '../common/constants/constants';
 import { UpdateTaskProgressDto } from './dto/update-progress.dto';
 import { UpdateTaskStatusDto } from './dto/update-status.dto';
 

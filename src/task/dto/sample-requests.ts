@@ -1,4 +1,4 @@
-import { RateCurrency, SkillCategory } from "src/common/constants/constants";
+import { RateCurrency, SkillCategory } from "../../common/constants/constants";
 import { CreateTaskDto } from "./create-task.dto";
 import { UpdateTaskProgressDto } from "./update-progress.dto";
 import { UpdateTaskStatusDto } from "./update-status.dto";

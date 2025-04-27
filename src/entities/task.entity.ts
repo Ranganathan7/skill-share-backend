@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, BeforeInsert, ManyToMany, JoinTable } from "typeorm";
-import { fieldConfig, RateCurrency, SkillCategory, TaskStatus } from "src/common/constants/constants";
+import { fieldConfig, RateCurrency, SkillCategory, TaskStatus } from "../common/constants/constants";
 import { AccountEntity } from "./account.entity";
 
 export class ProgressEntity {

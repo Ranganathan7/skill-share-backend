@@ -1,4 +1,4 @@
-import { NatureOfWork, RateCurrency, SkillCategory } from "src/common/constants/constants";
+import { NatureOfWork, RateCurrency, SkillCategory } from "../../common/constants/constants";
 import { AddUpdateSkillDto } from "./add-update-skill.dto";
 
 export const addSkill: OmitAccountId<AddUpdateSkillDto> = {

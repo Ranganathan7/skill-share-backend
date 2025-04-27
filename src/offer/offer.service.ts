@@ -3,9 +3,9 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { AccountRoles, TaskStatus } from 'src/common/constants/constants';
-import { AccountEntity } from 'src/entities/account.entity';
-import { TaskEntity } from 'src/entities/task.entity';
+import { AccountRoles, TaskStatus } from '../common/constants/constants';
+import { AccountEntity } from '../entities/account.entity';
+import { TaskEntity } from '../entities/task.entity';
 import { DataSource } from 'typeorm';
 import { AcceptOfferDto } from './dto/accept-offer.dto';
 

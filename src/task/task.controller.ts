@@ -9,13 +9,13 @@ import {
 import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { swaggerAPIOptions } from 'src/common/swagger/operations';
+import { swaggerAPIOptions } from '../common/swagger/operations';
 import { createTask, updateTaskProgress, updateTaskStatus } from './dto/sample-requests';
 import { UpdateTaskProgressDto } from './dto/update-progress.dto';
 import { UpdateTaskStatusDto } from './dto/update-status.dto';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { GetTasksDto } from './dto/get-tasks.dto';
-import { headers } from 'src/common/constants/constants';
+import { headers } from '../common/constants/constants';
 
 @ApiTags('Task related services')
 @Controller('task')

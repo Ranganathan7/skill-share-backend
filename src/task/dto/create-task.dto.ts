@@ -12,7 +12,7 @@ import {
   RateCurrency,
   SkillCategory,
   fieldConfig,
-} from 'src/common/constants/constants';
+} from '../../common/constants/constants';
 import { createTask } from './sample-requests';
 
 export class CreateTaskDto {

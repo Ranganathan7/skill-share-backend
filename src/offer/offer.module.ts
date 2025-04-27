@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountEntity } from '../entities/account.entity';
-import { TaskEntity } from 'src/entities/task.entity';
-import { SkillEntity } from 'src/entities/skill.entity';
+import { TaskEntity } from '../entities/task.entity';
+import { SkillEntity } from '../entities/skill.entity';
 import { OfferController } from './offer.controller';
 import { OfferService } from './offer.service';
 

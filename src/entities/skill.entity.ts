@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from "typeorm";
-import { NatureOfWork, RateCurrency, SkillCategory } from "src/common/constants/constants";
+import { NatureOfWork, RateCurrency, SkillCategory } from "../common/constants/constants";
 import { AccountEntity } from "./account.entity";
 
 @Entity({ name: 'skills' })

@@ -1,4 +1,4 @@
-import { AccountRoles, AccountType, fieldConfig } from "src/common/constants/constants";
+import { AccountRoles, AccountType, fieldConfig } from "../common/constants/constants";
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from "typeorm";
 import { TaskEntity } from "./task.entity";
 import { SkillEntity } from "./skill.entity";
