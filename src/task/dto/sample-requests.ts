@@ -7,7 +7,7 @@ export const createTask: OmitAccountId<CreateTaskDto> = {
   category: SkillCategory.FRONTEND,
   name: "Build a personal portfolio",
   description: "Looking for someone to build a responsive personal portfolio using Next.js and Tailwind CSS.",
-  expectedStartDate: new Date(),
+  expectedStartDate: (new Date()).toISOString(),
   expectedWorkingHours: 40,
   hourlyRate: 500,
   rateCurrency: RateCurrency.INR,

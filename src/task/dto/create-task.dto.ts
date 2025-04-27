@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsDateString,
   IsEnum,
   IsInt,
+  IsISO8601,
   IsNumber,
   IsPositive,
   IsString,
@@ -35,8 +35,8 @@ export class CreateTaskDto {
   description: string;
 
   @ApiProperty({ example: createTask.expectedStartDate })
-  @IsDateString()
-  expectedStartDate: Date;
+  @IsISO8601()
+  expectedStartDate: string;
 
   @ApiProperty()
   @IsNumber()
