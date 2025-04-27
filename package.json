@@ -88,6 +88,7 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/common/configuration/",
       "<rootDir>/common/constants/",
+      "<rootDir>/common/utils/",
       "<rootDir>/entities/",
       "<rootDir>/main.ts",
       "<rootDir>/common/swagger/",
