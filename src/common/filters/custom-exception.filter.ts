@@ -29,7 +29,7 @@ export class CustomExceptionFilter implements ExceptionFilter {
       statusCode: status,
       timestamp: new Date().toISOString(),
       error: {
-        errorCode: exceptionResponse['errorCode'] ?? error['code'] ?? error.name ?? "InternalServerException",
+        errorCode: exceptionResponse['errorCode'] ?? ((error instanceof HttpException) ? error.name : "InternalServerException"),
         description: (errorDescription ? (errorDescription instanceof Array ? errorDescription.join(' | ') : errorDescription) : null) ?? "Something went wrong!",
       },
       requestId,
