@@ -32,6 +32,8 @@ async function bootstrap() {
   // Registering global response transform interceptor
   app.useGlobalInterceptors(new TransformInterceptor())
 
+  app.enableCors()
+
   await app.listen(configService.get<number>('app.port') ?? 3000);
 }
 bootstrap();
