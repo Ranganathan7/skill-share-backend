@@ -92,6 +92,7 @@
       "<rootDir>/entities/",
       "<rootDir>/main.ts",
       "<rootDir>/common/swagger/",
+      "<rootDir>/common/logger/",
       ".*\\.module\\.ts$",
       ".*[\\/\\\\]sample-requests\\.ts$"
     ],
