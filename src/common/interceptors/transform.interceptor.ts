@@ -35,19 +35,18 @@ export class TransformInterceptor<T>
     const request = context.switchToHttp().getRequest();
     const requestId = request.headers[headers.requestId];
 
-    const { method, url } = request;
-
-    this.logger.info(
-      `Request: ${method} ${url}`,
-      [requestId],
-    );
-
     if (!requestId) {
       throw new BadRequestException({
         errorCode: 'MissingRequestIDHeader',
         description: 'Request ID header missing',
       });
     }
+
+    const { method, url } = request;
+    this.logger.info(
+      `Request: ${method} ${url}`,
+      [requestId],
+    );
 
     return next.handle().pipe(
       map((response) => {
