@@ -1,15 +1,20 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
 import { AddUpdateSkillDto } from './dto/add-update-skill.dto';
 import { addSkill } from './dto/sample-requests';
 import { SkillService } from './skill.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { GetSkillsDto } from './dto/get-skills.dto';
+import { headers } from 'src/common/constants/constants';
 
 @Controller('skills')
 @ApiTags('Skill related services')
 @ApiBearerAuth()
+@ApiHeader({
+  name: headers.requestId,
+  required: true
+})
 @UseGuards(JwtAuthGuard)
 export class SkillController {
   constructor(private readonly skillService: SkillService) { }

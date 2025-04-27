@@ -93,3 +93,8 @@ export const swaggerConstants = {
   uri: "docs"
 }
 
+export const headers = {
+  authorization: 'authorization',
+  requestId: 'request-id'
+}
+

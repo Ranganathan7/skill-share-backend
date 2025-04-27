@@ -6,7 +6,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
 import { OfferService } from './offer.service';
 import { MakeOfferDto } from './dto/make-offer.dto';
@@ -14,10 +14,15 @@ import { acceptOffer, makeOffer } from './dto/sample-requests';
 import { AcceptOfferDto } from './dto/accept-offer.dto';
 import { GetOffersDto } from './dto/get-offers.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { headers } from 'src/common/constants/constants';
 
 @ApiTags('Offer related services')
 @Controller('offer')
 @ApiBearerAuth()
+@ApiHeader({
+  name: headers.requestId,
+  required: true
+})
 @UseGuards(JwtAuthGuard)
 export class OfferController {
   constructor(private readonly offerService: OfferService) { }

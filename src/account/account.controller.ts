@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { swaggerAPIOptions } from 'src/common/swagger/operations';
 import {
   authenticateAccount,
@@ -13,9 +13,14 @@ import {
 import { AuthAccountDto } from './dto/authenticate-account.dto';
 import { GetAccountDto } from './dto/get-account.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { headers } from 'src/common/constants/constants';
 
 @Controller('accounts')
 @ApiTags('Account related services')
+@ApiHeader({
+  name: headers.requestId,
+  required: true
+})
 export class AccountController {
   constructor(private readonly accountService: AccountService) { }
 
