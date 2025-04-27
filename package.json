@@ -87,10 +87,12 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/common/configuration/",
-      "<rootDir>/common/constant/",
+      "<rootDir>/common/constants/",
       "<rootDir>/entities/",
       "<rootDir>/main.ts",
-      ".*\\.module\\.ts$"
+      "<rootDir>/common/swagger/",
+      ".*\\.module\\.ts$",
+      ".*\\.sample-requests\\.ts$"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
