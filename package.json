@@ -92,7 +92,7 @@
       "<rootDir>/main.ts",
       "<rootDir>/common/swagger/",
       ".*\\.module\\.ts$",
-      ".*\\.sample-requests\\.ts$"
+      ".*[\\/\\\\]sample-requests\\.ts$"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
