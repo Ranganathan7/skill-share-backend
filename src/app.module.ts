@@ -12,6 +12,8 @@ import { TaskModule } from './task/task.module';
 import { OfferModule } from './offer/offer.module';
 import { SkillModule } from './skill/skill.module';
 import { AuthModule } from './auth/auth.module';
+import { loggerConstant } from './common/constants/constants';
+import { createLoggerFactory } from './common/logger/winston.logger';
 
 @Module({
   imports: [
@@ -42,6 +44,15 @@ import { AuthModule } from './auth/auth.module';
     SkillModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // Winston logger
+    {
+      provide: loggerConstant,
+      useFactory: (configService: ConfigService) => createLoggerFactory('App', configService),
+      inject: [ConfigService],
+    },
+  ],
+  exports: [loggerConstant],
 })
 export class AppModule { }

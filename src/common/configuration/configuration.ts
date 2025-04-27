@@ -13,6 +13,7 @@ export default () => ({
     maxSize: process.env.LOGS_FILE_MAXSIZE || '100m',
     maxFile: process.env.LOGS_FILE_MAXFILE || '30d',
     zippedArchive: (process.env.LOGS_ZIPPED_ARCHIVE === 'true') || true,
+    datePattern: (process.env.LOGS_DATE_PATTERN) || 'YYYY-MM-DD',
   },
   database: {
     host: process.env.DB_HOST || '127.0.0.1',

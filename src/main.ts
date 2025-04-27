@@ -6,6 +6,7 @@ import { swaggerConstants } from './common/constants/constants';
 import { ValidationPipe } from '@nestjs/common';
 import { CustomExceptionFilter } from './common/filters/custom-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { createLoggerFactory } from './common/logger/winston.logger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,14 +24,17 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(swaggerConstants.uri, app, documentFactory);
 
+  // Create Winston logger
+  const appLogger = createLoggerFactory('Interceptor_Filter', configService);
+
   // Enable validation pipe to apply any param/class validations
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   // Registering global exception handler
-  app.useGlobalFilters(new CustomExceptionFilter());
+  app.useGlobalFilters(new CustomExceptionFilter(appLogger));
 
   // Registering global response transform interceptor
-  app.useGlobalInterceptors(new TransformInterceptor())
+  app.useGlobalInterceptors(new TransformInterceptor(appLogger))
 
   app.enableCors()
 

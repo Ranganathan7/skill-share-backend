@@ -1,6 +1,7 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { CommonApiResponse } from '../interceptors/transform.interceptor';
 import { headers } from '../constants/constants';
+import { Logger } from 'winston';
 
 export interface ApiError {
   description: string,
@@ -13,6 +14,8 @@ export interface ApiErrorResponse {
 
 @Catch()
 export class CustomExceptionFilter implements ExceptionFilter {
+  constructor(private readonly logger: Logger) { }
+
   catch(error: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
@@ -31,6 +34,11 @@ export class CustomExceptionFilter implements ExceptionFilter {
       },
       requestId,
     }
+
+    const { method, url } = request;
+
+    this.logger.error(`Error: ${method} ${url} ${errorResponse.statusCode} ${errorResponse.error.errorCode} ${errorResponse.error.description}`, [requestId])
+    this.logger.error(`Stack: ${error.stack}`)
     response.status(status)
     response.send(errorResponse)
   }

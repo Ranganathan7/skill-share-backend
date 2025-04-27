@@ -98,3 +98,5 @@ export const headers = {
   requestId: 'request-id'
 }
 
+export const loggerConstant = 'LOGGER'
+

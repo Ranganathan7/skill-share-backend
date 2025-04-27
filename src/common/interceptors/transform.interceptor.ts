@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { headers } from '../constants/constants';
+import { Logger } from 'winston';
 
 export type CommonApiResponse<T extends Record<string, any> = Record<string, any>> = T & {
   statusCode: number,
@@ -22,6 +23,8 @@ export interface ApiSuccessResponse<T> {
 @Injectable()
 export class TransformInterceptor<T>
   implements NestInterceptor<T, ApiSuccessResponse<T>> {
+  constructor(private readonly logger: Logger) { }
+
   intercept(
     context: ExecutionContext,
     next: CallHandler,
@@ -32,6 +35,13 @@ export class TransformInterceptor<T>
     const request = context.switchToHttp().getRequest();
     const requestId = request.headers[headers.requestId];
 
+    const { method, url } = request;
+
+    this.logger.info(
+      `Request: ${method} ${url}`,
+      [requestId],
+    );
+
     if (!requestId) {
       throw new BadRequestException({
         errorCode: 'MissingRequestIDHeader',
@@ -41,6 +51,10 @@ export class TransformInterceptor<T>
 
     return next.handle().pipe(
       map((response) => {
+        this.logger.info(
+          `Response: ${method} ${url}`,
+          [requestId],
+        );
         return this.constuctResponse(response, statusCode, requestId);
       }),
     );
