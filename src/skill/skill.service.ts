@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { AddUpdateSkillDto } from './dto/add-update-skill.dto';
 import { SkillEntity } from '../entities/skill.entity';
@@ -7,7 +12,7 @@ import { AccountRoles } from '../common/constants/constants';
 
 @Injectable()
 export class SkillService {
-  constructor(private readonly dataSource: DataSource) { }
+  constructor(private readonly dataSource: DataSource) {}
 
   /**
    * Adds a new skill or updates an existing one for a provider account.
@@ -81,7 +86,8 @@ export class SkillService {
     if (skills.length === 0) {
       throw new NotFoundException({
         errorCode: 'NoSkillsFound',
-        description: 'Invalid account ID or No skills found for the provided account ID',
+        description:
+          'Invalid account ID or No skills found for the provided account ID',
       });
     }
 

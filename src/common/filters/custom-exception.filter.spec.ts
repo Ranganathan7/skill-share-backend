@@ -10,7 +10,7 @@ describe('CustomExceptionFilter', () => {
   beforeEach(() => {
     logger = {
       error: jest.fn(),
-    } as any;  // mock logger
+    } as any; // mock logger
     mockHost = {
       switchToHttp: jest.fn().mockReturnValue({
         getRequest: jest.fn().mockReturnValue({
@@ -23,7 +23,7 @@ describe('CustomExceptionFilter', () => {
           send: jest.fn(),
         }),
       }),
-    } as any;  // mock ArgumentsHost
+    } as any; // mock ArgumentsHost
 
     exceptionFilter = new CustomExceptionFilter(logger);
   });
@@ -41,8 +41,15 @@ describe('CustomExceptionFilter', () => {
       HttpStatus.BAD_REQUEST,
     );
 
-    const mockRequest = { headers: { 'request-id': '123' }, method: 'GET', url: '/test' };
-    const mockResponse = { status: jest.fn().mockReturnThis(), send: jest.fn() };
+    const mockRequest = {
+      headers: { 'request-id': '123' },
+      method: 'GET',
+      url: '/test',
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
     jest.spyOn(mockHost, 'switchToHttp').mockReturnValueOnce({
       getRequest: () => mockRequest,
       getResponse: () => mockResponse,
@@ -70,8 +77,15 @@ describe('CustomExceptionFilter', () => {
       HttpStatus.BAD_REQUEST,
     );
 
-    const mockRequest = { headers: { 'request-id': '123' }, method: 'GET', url: '/test' };
-    const mockResponse = { status: jest.fn().mockReturnThis(), send: jest.fn() };
+    const mockRequest = {
+      headers: { 'request-id': '123' },
+      method: 'GET',
+      url: '/test',
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
     jest.spyOn(mockHost, 'switchToHttp').mockReturnValueOnce({
       getRequest: () => mockRequest,
       getResponse: () => mockResponse,
@@ -99,8 +113,15 @@ describe('CustomExceptionFilter', () => {
       HttpStatus.BAD_REQUEST,
     );
 
-    const mockRequest = { headers: { 'request-id': '123' }, method: 'GET', url: '/test' };
-    const mockResponse = { status: jest.fn().mockReturnThis(), send: jest.fn() };
+    const mockRequest = {
+      headers: { 'request-id': '123' },
+      method: 'GET',
+      url: '/test',
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
     jest.spyOn(mockHost, 'switchToHttp').mockReturnValueOnce({
       getRequest: () => mockRequest,
       getResponse: () => mockResponse,
@@ -121,10 +142,17 @@ describe('CustomExceptionFilter', () => {
   });
 
   it('should log the error and send the correct response when error is an instance of HttpException without description', () => {
-    const error = new Error()
+    const error = new Error();
 
-    const mockRequest = { headers: { 'request-id': '123' }, method: 'GET', url: '/test' };
-    const mockResponse = { status: jest.fn().mockReturnThis(), send: jest.fn() };
+    const mockRequest = {
+      headers: { 'request-id': '123' },
+      method: 'GET',
+      url: '/test',
+    };
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
     jest.spyOn(mockHost, 'switchToHttp').mockReturnValueOnce({
       getRequest: () => mockRequest,
       getResponse: () => mockResponse,
@@ -132,7 +160,9 @@ describe('CustomExceptionFilter', () => {
 
     exceptionFilter.catch(error, mockHost);
 
-    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
+    expect(mockResponse.status).toHaveBeenCalledWith(
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
     expect(mockResponse.send).toHaveBeenCalledWith({
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       timestamp: expect.any(String),

@@ -1,8 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AccountRoles, TaskStatus } from '../common/constants/constants';
 import { AccountEntity } from '../entities/account.entity';
 import { TaskEntity } from '../entities/task.entity';
@@ -11,7 +7,7 @@ import { AcceptOfferDto } from './dto/accept-offer.dto';
 
 @Injectable()
 export class OfferService {
-  constructor(private readonly dataSource: DataSource) { }
+  constructor(private readonly dataSource: DataSource) {}
 
   /**
    * Method to make an offer for a task.
@@ -55,16 +51,22 @@ export class OfferService {
 
     if (account.role !== AccountRoles.PROVIDER) {
       throw new HttpException(
-        { errorCode: 'UnauthorizedRole', description: 'Only providers can make offers' },
+        {
+          errorCode: 'UnauthorizedRole',
+          description: 'Only providers can make offers',
+        },
         HttpStatus.FORBIDDEN,
       );
     }
 
-    task.offers = task.offers ?? []
+    task.offers = task.offers ?? [];
     const alreadyOffered = task.offers.some((o) => o.id === accountId);
     if (alreadyOffered) {
       throw new HttpException(
-        { errorCode: 'AlreadyOffered', description: 'You have already made an offer for this task' },
+        {
+          errorCode: 'AlreadyOffered',
+          description: 'You have already made an offer for this task',
+        },
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -82,22 +84,33 @@ export class OfferService {
   async getOffersForAccount(accountId: number) {
     const account = await this.dataSource.manager.findOne(AccountEntity, {
       where: { id: accountId },
-      relations: ['tasksOffered', 'tasksOffered.user', 'tasksOffered.provider', 'tasksPosted', 'tasksPosted.offers', 'tasksPosted.provider', 'tasksPosted.offers.skills'],
+      relations: [
+        'tasksOffered',
+        'tasksOffered.user',
+        'tasksOffered.provider',
+        'tasksPosted',
+        'tasksPosted.offers',
+        'tasksPosted.provider',
+        'tasksPosted.offers.skills',
+      ],
     });
 
     if (!account) {
-      throw new HttpException({
-        errorCode: 'AccountNotFound',
-        description: 'No account found with the given ID',
-      }, HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        {
+          errorCode: 'AccountNotFound',
+          description: 'No account found with the given ID',
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     const isProvider = account.role === AccountRoles.PROVIDER;
 
     if (isProvider) {
       const offeredTasks = (account.tasksOffered || [])
-        .filter(task => !task.provider) // exclude accepted
-        .map(task => ({
+        .filter((task) => !task.provider) // exclude accepted
+        .map((task) => ({
           taskId: task.id,
           taskName: task.name,
           user: {
@@ -111,11 +124,11 @@ export class OfferService {
       return offeredTasks;
     } else {
       const postedTasks = (account.tasksPosted || [])
-        .filter(task => !task.provider) // exclude accepted
-        .map(task => ({
+        .filter((task) => !task.provider) // exclude accepted
+        .map((task) => ({
           taskId: task.id,
           taskName: task.name,
-          offers: (task.offers || []).map(provider => ({
+          offers: (task.offers || []).map((provider) => ({
             id: provider.id,
             email: provider.email,
             individualAccount: provider.individualAccount,
@@ -151,22 +164,33 @@ export class OfferService {
 
     if (task.user.id !== userId) {
       throw new HttpException(
-        { errorCode: 'Unauthorized', description: 'Only the user who created the task can accept offers' },
+        {
+          errorCode: 'Unauthorized',
+          description: 'Only the user who created the task can accept offers',
+        },
         HttpStatus.FORBIDDEN,
       );
     }
 
     if (task.provider) {
       throw new HttpException(
-        { errorCode: 'AlreadyAccepted', description: 'This task already has a provider assigned' },
+        {
+          errorCode: 'AlreadyAccepted',
+          description: 'This task already has a provider assigned',
+        },
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const provider = (task.offers ?? [])?.filter(offer => offer.id === providerId)[0]
+    const provider = (task.offers ?? [])?.filter(
+      (offer) => offer.id === providerId,
+    )[0];
     if (!provider) {
       throw new HttpException(
-        { errorCode: 'OfferNotFound', description: 'The provider has not made an offer for this task' },
+        {
+          errorCode: 'OfferNotFound',
+          description: 'The provider has not made an offer for this task',
+        },
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -176,8 +200,7 @@ export class OfferService {
 
     await this.dataSource.manager.save(task);
     return {
-      message: 'Offer accepted successfully!'
-    }
+      message: 'Offer accepted successfully!',
+    };
   }
 }
-

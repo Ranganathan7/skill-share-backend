@@ -27,7 +27,9 @@ describe('OfferService', () => {
     });
 
     it('should throw if task already has a provider', async () => {
-      (dataSource.manager.findOne as jest.Mock).mockResolvedValueOnce({ provider: {} });
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValueOnce({
+        provider: {},
+      });
 
       await expect(service.makeOffer(1, 1)).rejects.toThrow(HttpException);
     });
@@ -64,7 +66,10 @@ describe('OfferService', () => {
         .mockResolvedValueOnce(task) // task
         .mockResolvedValueOnce(account); // provider
 
-      (dataSource.manager.save as jest.Mock).mockResolvedValueOnce({ ...task, offers: [account] });
+      (dataSource.manager.save as jest.Mock).mockResolvedValueOnce({
+        ...task,
+        offers: [account],
+      });
 
       const result = await service.makeOffer(2, 1);
 
@@ -83,7 +88,10 @@ describe('OfferService', () => {
         .mockResolvedValueOnce(task) // task
         .mockResolvedValueOnce(account); // provider
 
-      (dataSource.manager.save as jest.Mock).mockResolvedValueOnce({ ...task, offers: [account] });
+      (dataSource.manager.save as jest.Mock).mockResolvedValueOnce({
+        ...task,
+        offers: [account],
+      });
 
       const result = await service.makeOffer(2, 1);
 
@@ -99,7 +107,9 @@ describe('OfferService', () => {
     it('should throw if account not found', async () => {
       (dataSource.manager.findOne as jest.Mock).mockResolvedValue(null);
 
-      await expect(service.getOffersForAccount(1)).rejects.toThrow(HttpException);
+      await expect(service.getOffersForAccount(1)).rejects.toThrow(
+        HttpException,
+      );
     });
 
     it('should return offered tasks for provider', async () => {
@@ -107,7 +117,17 @@ describe('OfferService', () => {
         id: 1,
         role: AccountRoles.PROVIDER,
         tasksOffered: [
-          { id: 1, name: 'Task 1', provider: null, user: { id: 3, email: 'user@example.com', individualAccount: {}, companyAccount: null } },
+          {
+            id: 1,
+            name: 'Task 1',
+            provider: null,
+            user: {
+              id: 3,
+              email: 'user@example.com',
+              individualAccount: {},
+              companyAccount: null,
+            },
+          },
           { id: 2, name: 'Task 2', provider: { id: 99 } }, // already accepted, should exclude
         ],
       };
@@ -134,7 +154,7 @@ describe('OfferService', () => {
       const account = {
         id: 1,
         role: AccountRoles.PROVIDER,
-        tasksOffered: null
+        tasksOffered: null,
       };
 
       (dataSource.manager.findOne as jest.Mock).mockResolvedValue(account);
@@ -154,7 +174,13 @@ describe('OfferService', () => {
             name: 'Posted Task',
             provider: null,
             offers: [
-              { id: 4, email: 'provider@example.com', individualAccount: {}, companyAccount: null, skills: [] },
+              {
+                id: 4,
+                email: 'provider@example.com',
+                individualAccount: {},
+                companyAccount: null,
+                skills: [],
+              },
             ],
           },
         ],
@@ -233,7 +259,9 @@ describe('OfferService', () => {
     it('should throw if task not found', async () => {
       (dataSource.manager.findOne as jest.Mock).mockResolvedValue(null);
 
-      await expect(service.acceptOffer(acceptOfferDto)).rejects.toThrow(HttpException);
+      await expect(service.acceptOffer(acceptOfferDto)).rejects.toThrow(
+        HttpException,
+      );
     });
 
     it('should throw if not task owner', async () => {
@@ -242,7 +270,9 @@ describe('OfferService', () => {
         user: { id: 999 }, // not matching user
       });
 
-      await expect(service.acceptOffer(acceptOfferDto)).rejects.toThrow(HttpException);
+      await expect(service.acceptOffer(acceptOfferDto)).rejects.toThrow(
+        HttpException,
+      );
     });
 
     it('should throw if task already accepted', async () => {
@@ -252,7 +282,9 @@ describe('OfferService', () => {
         provider: { id: 999 },
       });
 
-      await expect(service.acceptOffer(acceptOfferDto)).rejects.toThrow(HttpException);
+      await expect(service.acceptOffer(acceptOfferDto)).rejects.toThrow(
+        HttpException,
+      );
     });
 
     it('should throw if provider not found in offers', async () => {
@@ -263,7 +295,9 @@ describe('OfferService', () => {
         offers: null,
       });
 
-      await expect(service.acceptOffer(acceptOfferDto)).rejects.toThrow(HttpException);
+      await expect(service.acceptOffer(acceptOfferDto)).rejects.toThrow(
+        HttpException,
+      );
     });
 
     it('should accept an offer successfully', async () => {

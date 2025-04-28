@@ -1,7 +1,17 @@
-import { AccountRoles, AccountType, fieldConfig } from "../common/constants/constants";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from "typeorm";
-import { TaskEntity } from "./task.entity";
-import { SkillEntity } from "./skill.entity";
+import {
+  AccountRoles,
+  AccountType,
+  fieldConfig,
+} from '../common/constants/constants';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToMany,
+} from 'typeorm';
+import { TaskEntity } from './task.entity';
+import { SkillEntity } from './skill.entity';
 
 export class AddressEntity {
   @Column({ type: 'varchar', length: fieldConfig.streetNumber.length })

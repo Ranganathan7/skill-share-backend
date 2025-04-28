@@ -1,14 +1,27 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
-import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiHeader,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { swaggerAPIOptions } from '../common/swagger/operations';
 import {
   authenticateAccount,
   createCompanyProviderAccount,
   createCompanyUserAccount,
   createIndividualProviderAccount,
-  createIndividualUserAccount
+  createIndividualUserAccount,
 } from './dto/sample-requests';
 import { AuthAccountDto } from './dto/authenticate-account.dto';
 import { GetAccountDto } from './dto/get-account.dto';
@@ -19,10 +32,10 @@ import { headers } from '../common/constants/constants';
 @ApiTags('Account related services')
 @ApiHeader({
   name: headers.requestId,
-  required: true
+  required: true,
 })
 export class AccountController {
-  constructor(private readonly accountService: AccountService) { }
+  constructor(private readonly accountService: AccountService) {}
 
   /**
    * Endpoint to create a new account.
@@ -36,18 +49,18 @@ export class AccountController {
     type: CreateAccountDto,
     examples: {
       individualUserAccount: {
-        value: createIndividualUserAccount
+        value: createIndividualUserAccount,
       },
       companyUserAccount: {
-        value: createCompanyUserAccount
+        value: createCompanyUserAccount,
       },
       individualProviderAccount: {
-        value: createIndividualProviderAccount
+        value: createIndividualProviderAccount,
       },
       companyProviderAccount: {
-        value: createCompanyProviderAccount
-      }
-    }
+        value: createCompanyProviderAccount,
+      },
+    },
   })
   async create(@Body() dto: CreateAccountDto) {
     return this.accountService.create(dto);
@@ -64,9 +77,9 @@ export class AccountController {
     type: AuthAccountDto,
     examples: {
       authenticateAccount: {
-        value: authenticateAccount
-      }
-    }
+        value: authenticateAccount,
+      },
+    },
   })
   async authenticate(@Body() dto: AuthAccountDto) {
     return this.accountService.authenticate(dto);

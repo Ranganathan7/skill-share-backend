@@ -31,7 +31,9 @@ describe('AppService', () => {
     it('should return the app name from config service when it exists', () => {
       // Arrange
       const expectedAppName = 'My Awesome Application';
-      mockConfigService = new MockConfigService({ app: { name: expectedAppName } });
+      mockConfigService = new MockConfigService({
+        app: { name: expectedAppName },
+      });
       appService = new AppService(mockConfigService as any);
 
       // Act

@@ -21,7 +21,10 @@ describe('SkillController', () => {
 
   describe('addOrUpdate', () => {
     it('should call skillService.addOrUpdate with correct params', async () => {
-      const dto = { accountId: 1, skillName: 'NestJS' } as unknown as AddUpdateSkillDto;
+      const dto = {
+        accountId: 1,
+        skillName: 'NestJS',
+      } as unknown as AddUpdateSkillDto;
       const result = { success: true };
       (service.addOrUpdate as jest.Mock).mockResolvedValue(result);
 

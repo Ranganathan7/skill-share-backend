@@ -12,8 +12,8 @@ export default () => ({
     dateParttern: process.env.LOGS_DATEPATTERN || 'MM-DD-YYYY',
     maxSize: process.env.LOGS_FILE_MAXSIZE || '100m',
     maxFile: process.env.LOGS_FILE_MAXFILE || '30d',
-    zippedArchive: (process.env.LOGS_ZIPPED_ARCHIVE === 'true') || true,
-    datePattern: (process.env.LOGS_DATE_PATTERN) || 'YYYY-MM-DD',
+    zippedArchive: process.env.LOGS_ZIPPED_ARCHIVE === 'true' || true,
+    datePattern: process.env.LOGS_DATE_PATTERN || 'YYYY-MM-DD',
   },
   database: {
     host: process.env.DB_HOST || '127.0.0.1',
@@ -21,10 +21,10 @@ export default () => ({
     user: process.env.DB_USER || '',
     password: process.env.DB_PASSWORD || '',
     databaseName: process.env.DB_NAME || '',
-    synchronize: process.env.DB_SYNCHRONIZE === 'true'
+    synchronize: process.env.DB_SYNCHRONIZE === 'true',
   },
   jwt: {
     secret: process.env.JWT_SECRET,
-    expiresIn: process.env.JWT_EXPIRES_IN
-  }
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  },
 });

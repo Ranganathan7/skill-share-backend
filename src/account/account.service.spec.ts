@@ -10,7 +10,7 @@ import { HttpException } from '@nestjs/common';
 jest.mock('../common/utils/hash-password', () => ({
   hashPassword: jest.fn(async (password) => `hashed-${password}`),
   comparePasswords: jest.fn(async (input, hashed) => {
-    return input === 'validPassword'
+    return input === 'validPassword';
   }),
 }));
 
@@ -49,13 +49,22 @@ describe('AccountService', () => {
     });
 
     it('should throw if companyAccount missing for COMPANY type', async () => {
-      const dto = { ...baseDto, type: AccountType.COMPANY, companyAccount: null } as any;
+      const dto = {
+        ...baseDto,
+        type: AccountType.COMPANY,
+        companyAccount: null,
+      } as any;
 
       await expect(service.create(dto)).rejects.toThrow(HttpException);
     });
 
     it('should create an account successfully for company account', async () => {
-      const dto = { ...baseDto, individualAccount: null, companyAccount: { companyName: 'test' }, type: AccountType.COMPANY } as any;
+      const dto = {
+        ...baseDto,
+        individualAccount: null,
+        companyAccount: { companyName: 'test' },
+        type: AccountType.COMPANY,
+      } as any;
       await expect(service.create(dto)).resolves.toEqual({
         message: 'Account created successfully!',
       });
@@ -119,7 +128,10 @@ describe('AccountService', () => {
     it('should return access token if credentials are valid', async () => {
       (dataSource.manager.findOne as jest.Mock).mockResolvedValue(validAccount);
 
-      const result = await service.authenticate({ email, password: 'validPassword' });
+      const result = await service.authenticate({
+        email,
+        password: 'validPassword',
+      });
 
       expect(result).toEqual({
         accessToken: 'mocked-jwt-token',
@@ -136,9 +148,15 @@ describe('AccountService', () => {
     });
 
     it('should return access token if credentials are valid with no name', async () => {
-      (dataSource.manager.findOne as jest.Mock).mockResolvedValue({ ...validAccount, individualAccount: undefined });
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValue({
+        ...validAccount,
+        individualAccount: undefined,
+      });
 
-      const result = await service.authenticate({ email, password: 'validPassword' });
+      const result = await service.authenticate({
+        email,
+        password: 'validPassword',
+      });
 
       expect(result).toEqual({
         accessToken: 'mocked-jwt-token',
@@ -155,9 +173,15 @@ describe('AccountService', () => {
     });
 
     it('should return access token if credentials are valid with no last name for individual account', async () => {
-      (dataSource.manager.findOne as jest.Mock).mockResolvedValue({ ...validAccount, individualAccount: { firstName: 'test' } });
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValue({
+        ...validAccount,
+        individualAccount: { firstName: 'test' },
+      });
 
-      const result = await service.authenticate({ email, password: 'validPassword' });
+      const result = await service.authenticate({
+        email,
+        password: 'validPassword',
+      });
 
       expect(result).toEqual({
         accessToken: 'mocked-jwt-token',
@@ -178,7 +202,9 @@ describe('AccountService', () => {
     it('should throw if account not found', async () => {
       (dataSource.manager.findOne as jest.Mock).mockResolvedValue(null);
 
-      await expect(service.get({ accountId: 1 })).rejects.toThrow(HttpException);
+      await expect(service.get({ accountId: 1 })).rejects.toThrow(
+        HttpException,
+      );
     });
 
     it('should return account if found', async () => {

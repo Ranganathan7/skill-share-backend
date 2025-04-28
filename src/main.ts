@@ -34,9 +34,9 @@ async function bootstrap() {
   app.useGlobalFilters(new CustomExceptionFilter(appLogger));
 
   // Registering global response transform interceptor
-  app.useGlobalInterceptors(new TransformInterceptor(appLogger))
+  app.useGlobalInterceptors(new TransformInterceptor(appLogger));
 
-  app.enableCors()
+  app.enableCors();
 
   await app.listen(configService.get<number>('app.port') ?? 3000);
 }

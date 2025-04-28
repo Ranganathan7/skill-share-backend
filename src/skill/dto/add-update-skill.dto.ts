@@ -1,6 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsInt, IsNumber, IsPositive } from 'class-validator';
-import { NatureOfWork, RateCurrency, SkillCategory } from '../../common/constants/constants';
+import {
+  NatureOfWork,
+  RateCurrency,
+  SkillCategory,
+} from '../../common/constants/constants';
 
 export class AddUpdateSkillDto {
   @IsInt()

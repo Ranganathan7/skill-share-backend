@@ -6,7 +6,13 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBody,
+  ApiBearerAuth,
+  ApiHeader,
+} from '@nestjs/swagger';
 import { swaggerAPIOptions } from '../common/swagger/operations';
 import { OfferService } from './offer.service';
 import { MakeOfferDto } from './dto/make-offer.dto';
@@ -21,11 +27,11 @@ import { headers } from '../common/constants/constants';
 @ApiBearerAuth()
 @ApiHeader({
   name: headers.requestId,
-  required: true
+  required: true,
 })
 @UseGuards(JwtAuthGuard)
 export class OfferController {
-  constructor(private readonly offerService: OfferService) { }
+  constructor(private readonly offerService: OfferService) {}
 
   /**
    * Endpoint to make an offer for a task.
@@ -38,9 +44,9 @@ export class OfferController {
     type: MakeOfferDto,
     examples: {
       makeOffer: {
-        value: makeOffer
+        value: makeOffer,
       },
-    }
+    },
   })
   @ApiOperation(swaggerAPIOptions.makeOffer)
   async makeOffer(@Body() dto: MakeOfferDto) {
@@ -70,13 +76,12 @@ export class OfferController {
     type: AcceptOfferDto,
     examples: {
       acceptOffer: {
-        value: acceptOffer
+        value: acceptOffer,
       },
-    }
+    },
   })
   @ApiOperation(swaggerAPIOptions.acceptOffer)
   async acceptOffer(@Body() dto: AcceptOfferDto) {
     return this.offerService.acceptOffer(dto);
   }
 }
-

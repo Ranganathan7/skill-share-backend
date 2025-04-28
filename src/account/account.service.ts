@@ -10,7 +10,10 @@ import { GetAccountDto } from './dto/get-account.dto';
 
 @Injectable()
 export class AccountService {
-  constructor(private readonly dataSource: DataSource, private readonly jwtService: JwtService) { }
+  constructor(
+    private readonly dataSource: DataSource,
+    private readonly jwtService: JwtService,
+  ) {}
 
   /**
    * Creates a new account based on the provided details.
@@ -18,7 +21,8 @@ export class AccountService {
    * and saves the account to the database.
    */
   async create(dto: CreateAccountDto) {
-    const { password, type, individualAccount, companyAccount, ...baseFields } = dto;
+    const { password, type, individualAccount, companyAccount, ...baseFields } =
+      dto;
 
     // Validate presence of individual details for INDIVIDUAL type
     if (type === AccountType.INDIVIDUAL && !individualAccount) {
@@ -48,7 +52,8 @@ export class AccountService {
     Object.assign(account, baseFields, {
       password: hashedPassword,
       type,
-      individualAccount: type === AccountType.INDIVIDUAL ? individualAccount : null,
+      individualAccount:
+        type === AccountType.INDIVIDUAL ? individualAccount : null,
       companyAccount: type === AccountType.COMPANY ? companyAccount : null,
     });
 
@@ -64,7 +69,12 @@ export class AccountService {
    * Returns the access token if credentials are valid.
    * Throws HTTP exceptions for invalid email or password.
    */
-  async authenticate(dto: AuthAccountDto): Promise<{ accessToken: string, accountId: number, name: string, email: string }> {
+  async authenticate(dto: AuthAccountDto): Promise<{
+    accessToken: string;
+    accountId: number;
+    name: string;
+    email: string;
+  }> {
     const { email, password } = dto;
 
     // Look up the account by email
@@ -98,13 +108,21 @@ export class AccountService {
     const accessToken = this.jwtService.sign({
       accountId: account.id,
       role: account.role,
-      type: account.type
-    })
+      type: account.type,
+    });
 
     return {
       accessToken,
       accountId: account.id,
-      name: (account.companyAccount?.companyName || account.individualAccount?.firstName)?.concat(account.individualAccount?.lastName ? ` ${account.individualAccount.lastName}` : '') ?? '',
+      name:
+        (
+          account.companyAccount?.companyName ||
+          account.individualAccount?.firstName
+        )?.concat(
+          account.individualAccount?.lastName
+            ? ` ${account.individualAccount.lastName}`
+            : '',
+        ) ?? '',
       email: account.email,
     };
   }
@@ -115,7 +133,7 @@ export class AccountService {
   async get(dto: GetAccountDto): Promise<AccountEntity> {
     // Look up the account by id
     const account = await this.dataSource.manager.findOne(AccountEntity, {
-      where: { id: dto.accountId }
+      where: { id: dto.accountId },
     });
 
     if (!account) {

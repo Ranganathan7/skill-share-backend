@@ -1,5 +1,18 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiHeader,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { swaggerAPIOptions } from '../common/swagger/operations';
 import { AddUpdateSkillDto } from './dto/add-update-skill.dto';
 import { addSkill } from './dto/sample-requests';
@@ -13,11 +26,11 @@ import { headers } from '../common/constants/constants';
 @ApiBearerAuth()
 @ApiHeader({
   name: headers.requestId,
-  required: true
+  required: true,
 })
 @UseGuards(JwtAuthGuard)
 export class SkillController {
-  constructor(private readonly skillService: SkillService) { }
+  constructor(private readonly skillService: SkillService) {}
 
   /**
    * Endpoint to add or update a skill for a given account.
@@ -31,9 +44,9 @@ export class SkillController {
     type: AddUpdateSkillDto,
     examples: {
       addSkill: {
-        value: addSkill
+        value: addSkill,
       },
-    }
+    },
   })
   async addOrUpdate(@Body() dto: AddUpdateSkillDto) {
     return this.skillService.addOrUpdate(dto.accountId, dto);

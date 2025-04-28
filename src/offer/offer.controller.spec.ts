@@ -45,7 +45,11 @@ describe('OfferController', () => {
 
   describe('acceptOffer', () => {
     it('should call offerService.acceptOffer with correct dto', async () => {
-      const dto = { accountId: 1, taskId: 2, offerAccountId: 3 } as unknown as AcceptOfferDto;
+      const dto = {
+        accountId: 1,
+        taskId: 2,
+        offerAccountId: 3,
+      } as unknown as AcceptOfferDto;
       const result = { success: true };
       (service.acceptOffer as jest.Mock).mockResolvedValue(result);
 

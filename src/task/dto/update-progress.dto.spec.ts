@@ -17,7 +17,7 @@ describe('UpdateTaskProgressDto', () => {
     it('should fail if accountId is not a positive integer', async () => {
       dto.accountId = -1;
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'accountId')).toBe(true);
+      expect(errors.some((e) => e.property === 'accountId')).toBe(true);
     });
 
     it('should pass if accountId is a positive integer', async () => {
@@ -31,7 +31,7 @@ describe('UpdateTaskProgressDto', () => {
     it('should fail if taskId is not a positive integer', async () => {
       dto.taskId = -1;
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'taskId')).toBe(true);
+      expect(errors.some((e) => e.property === 'taskId')).toBe(true);
     });
 
     it('should pass if taskId is a positive integer', async () => {
@@ -45,7 +45,7 @@ describe('UpdateTaskProgressDto', () => {
     it('should fail if description is not a string', async () => {
       dto.description = 12345 as any;
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'description')).toBe(true);
+      expect(errors.some((e) => e.property === 'description')).toBe(true);
     });
 
     it('should pass if description is a valid string', async () => {

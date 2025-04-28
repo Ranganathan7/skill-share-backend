@@ -44,17 +44,24 @@ describe('JwtAuthGuard', () => {
 
   describe('canActivate', () => {
     it('should return true if a valid Bearer token is provided', async () => {
-      mockContext.switchToHttp().getRequest().headers[headers.authorization] = `Bearer ${mockToken}`;
+      mockContext.switchToHttp().getRequest().headers[headers.authorization] =
+        `Bearer ${mockToken}`;
       jwtService.verify.mockReturnValue({ accountId: mockAccountId });
 
       const canActivate = await guard.canActivate(mockContext);
       expect(canActivate).toBe(true);
-      expect(jwtService.verify).toHaveBeenCalledWith(mockToken, { secret: mockSecret });
-      expect(mockContext.switchToHttp().getRequest().body.accountId).toBe(mockAccountId);
+      expect(jwtService.verify).toHaveBeenCalledWith(mockToken, {
+        secret: mockSecret,
+      });
+      expect(mockContext.switchToHttp().getRequest().body.accountId).toBe(
+        mockAccountId,
+      );
     });
 
     it('should throw UnauthorizedException if Authorization header is missing', async () => {
-      await expect(guard.canActivate(mockContext)).rejects.toThrow(UnauthorizedException);
+      await expect(guard.canActivate(mockContext)).rejects.toThrow(
+        UnauthorizedException,
+      );
       try {
         await guard.canActivate(mockContext);
       } catch (error) {
@@ -66,9 +73,12 @@ describe('JwtAuthGuard', () => {
     });
 
     it('should throw UnauthorizedException if Authorization header does not start with Bearer', async () => {
-      mockContext.switchToHttp().getRequest().headers[headers.authorization] = `Basic ${mockToken}`;
+      mockContext.switchToHttp().getRequest().headers[headers.authorization] =
+        `Basic ${mockToken}`;
 
-      await expect(guard.canActivate(mockContext)).rejects.toThrow(UnauthorizedException);
+      await expect(guard.canActivate(mockContext)).rejects.toThrow(
+        UnauthorizedException,
+      );
       try {
         await guard.canActivate(mockContext);
       } catch (error) {
@@ -80,12 +90,15 @@ describe('JwtAuthGuard', () => {
     });
 
     it('should throw UnauthorizedException if the token is invalid', async () => {
-      mockContext.switchToHttp().getRequest().headers[headers.authorization] = `Bearer ${mockToken}`;
+      mockContext.switchToHttp().getRequest().headers[headers.authorization] =
+        `Bearer ${mockToken}`;
       jwtService.verify.mockImplementation(() => {
         throw new Error('Invalid token');
       });
 
-      await expect(guard.canActivate(mockContext)).rejects.toThrow(UnauthorizedException);
+      await expect(guard.canActivate(mockContext)).rejects.toThrow(
+        UnauthorizedException,
+      );
       try {
         await guard.canActivate(mockContext);
       } catch (error) {
@@ -97,12 +110,15 @@ describe('JwtAuthGuard', () => {
     });
 
     it('should throw UnauthorizedException if the token verification fails for any reason', async () => {
-      mockContext.switchToHttp().getRequest().headers[headers.authorization] = `Bearer ${mockToken}`;
+      mockContext.switchToHttp().getRequest().headers[headers.authorization] =
+        `Bearer ${mockToken}`;
       jwtService.verify.mockImplementation(() => {
         throw new Error('Some other error');
       });
 
-      await expect(guard.canActivate(mockContext)).rejects.toThrow(UnauthorizedException);
+      await expect(guard.canActivate(mockContext)).rejects.toThrow(
+        UnauthorizedException,
+      );
       try {
         await guard.canActivate(mockContext);
       } catch (error) {

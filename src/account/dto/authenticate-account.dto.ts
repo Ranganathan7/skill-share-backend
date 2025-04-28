@@ -4,7 +4,7 @@ import {
   MinLength,
   MaxLength,
   Matches,
-  IsNotEmpty
+  IsNotEmpty,
 } from 'class-validator';
 import { fieldConfig } from '../../common/constants/constants';
 

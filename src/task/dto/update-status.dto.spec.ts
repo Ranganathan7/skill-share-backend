@@ -16,7 +16,7 @@ describe('UpdateTaskStatusDto', () => {
     it('should fail if accountId is not a positive integer', async () => {
       dto.accountId = -1;
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'accountId')).toBe(true);
+      expect(errors.some((e) => e.property === 'accountId')).toBe(true);
     });
 
     it('should pass if accountId is a positive integer', async () => {
@@ -30,7 +30,7 @@ describe('UpdateTaskStatusDto', () => {
     it('should fail if taskId is not a positive integer', async () => {
       dto.taskId = -1;
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'taskId')).toBe(true);
+      expect(errors.some((e) => e.property === 'taskId')).toBe(true);
     });
 
     it('should pass if taskId is a positive integer', async () => {

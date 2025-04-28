@@ -3,7 +3,12 @@ import { DataSource } from 'typeorm';
 import { SkillEntity } from '../entities/skill.entity';
 import { AddUpdateSkillDto } from './dto/add-update-skill.dto';
 import { HttpException, NotFoundException } from '@nestjs/common';
-import { AccountRoles, NatureOfWork, RateCurrency, SkillCategory } from '../common/constants/constants';
+import {
+  AccountRoles,
+  NatureOfWork,
+  RateCurrency,
+  SkillCategory,
+} from '../common/constants/constants';
 
 describe('SkillService', () => {
   let service: SkillService;
@@ -28,20 +33,26 @@ describe('SkillService', () => {
       natureOfWork: NatureOfWork.ONLINE,
       hourlyRate: 30,
       rateCurrency: RateCurrency.USD,
-      accountId: 1
+      accountId: 1,
     };
 
     it('should throw AccountNotFound if account does not exist', async () => {
       (dataSource.manager.findOne as jest.Mock).mockResolvedValueOnce(null);
 
-      await expect(service.addOrUpdate(providerId, dto)).rejects.toThrow(HttpException);
+      await expect(service.addOrUpdate(providerId, dto)).rejects.toThrow(
+        HttpException,
+      );
       expect(dataSource.manager.findOne).toHaveBeenCalled();
     });
 
     it('should throw NotAProvider if account is not a provider', async () => {
-      (dataSource.manager.findOne as jest.Mock).mockResolvedValueOnce({ role: AccountRoles.USER });
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValueOnce({
+        role: AccountRoles.USER,
+      });
 
-      await expect(service.addOrUpdate(providerId, dto)).rejects.toThrow(HttpException);
+      await expect(service.addOrUpdate(providerId, dto)).rejects.toThrow(
+        HttpException,
+      );
     });
 
     it('should update skill if existing skill found', async () => {
@@ -51,14 +62,19 @@ describe('SkillService', () => {
         .mockResolvedValueOnce(mockAccount) // find account
         .mockResolvedValueOnce(existingSkill); // find existing skill
 
-      const saveSpy = jest.spyOn(dataSource.manager, 'save').mockResolvedValueOnce(null);
+      const saveSpy = jest
+        .spyOn(dataSource.manager, 'save')
+        .mockResolvedValueOnce(null);
 
       const result = await service.addOrUpdate(providerId, dto);
 
-      expect(saveSpy).toHaveBeenCalledWith(SkillEntity, expect.objectContaining({
-        experience: dto.experience,
-        natureOfWork: dto.natureOfWork,
-      }));
+      expect(saveSpy).toHaveBeenCalledWith(
+        SkillEntity,
+        expect.objectContaining({
+          experience: dto.experience,
+          natureOfWork: dto.natureOfWork,
+        }),
+      );
       expect(result).toEqual({ message: 'Updated existing skill!' });
     });
 
@@ -68,11 +84,16 @@ describe('SkillService', () => {
         .mockResolvedValueOnce(mockAccount) // find account
         .mockResolvedValueOnce(null); // no existing skill
 
-      const saveSpy = jest.spyOn(dataSource.manager, 'save').mockResolvedValueOnce(null);
+      const saveSpy = jest
+        .spyOn(dataSource.manager, 'save')
+        .mockResolvedValueOnce(null);
 
       const result = await service.addOrUpdate(providerId, dto);
 
-      expect(saveSpy).toHaveBeenCalledWith(SkillEntity, expect.any(SkillEntity));
+      expect(saveSpy).toHaveBeenCalledWith(
+        SkillEntity,
+        expect.any(SkillEntity),
+      );
       expect(result).toEqual({ message: 'Added new skill!' });
     });
   });

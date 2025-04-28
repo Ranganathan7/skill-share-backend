@@ -25,7 +25,10 @@ describe('TaskController', () => {
 
   describe('createTask', () => {
     it('should call taskService.createTask with correct params', async () => {
-      const dto = { title: 'New Task', description: 'Description' } as unknown as CreateTaskDto;
+      const dto = {
+        title: 'New Task',
+        description: 'Description',
+      } as unknown as CreateTaskDto;
       const result = { id: 1, ...dto };
       (service.createTask as jest.Mock).mockResolvedValue(result);
 
@@ -47,7 +50,10 @@ describe('TaskController', () => {
 
   describe('updateProgress', () => {
     it('should call taskService.updateProgress with correct params', async () => {
-      const dto = { taskId: 1, progress: 50 } as unknown as UpdateTaskProgressDto;
+      const dto = {
+        taskId: 1,
+        progress: 50,
+      } as unknown as UpdateTaskProgressDto;
       const result = { success: true };
       (service.updateProgress as jest.Mock).mockResolvedValue(result);
 
@@ -58,7 +64,10 @@ describe('TaskController', () => {
 
   describe('updateStatus', () => {
     it('should call taskService.updateStatus with correct params', async () => {
-      const dto = { taskId: 1, status: 'COMPLETED' } as unknown as UpdateTaskStatusDto;
+      const dto = {
+        taskId: 1,
+        status: 'COMPLETED',
+      } as unknown as UpdateTaskStatusDto;
       const result = { success: true };
       (service.updateStatus as jest.Mock).mockResolvedValue(result);
 

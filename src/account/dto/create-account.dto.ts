@@ -1,10 +1,18 @@
 import {
-  IsEnum, IsNotEmpty, IsOptional,
-  ValidateNested, MaxLength, MinLength,
-  Matches
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  ValidateNested,
+  MaxLength,
+  MinLength,
+  Matches,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { AccountRoles, AccountType, fieldConfig } from '../../common/constants/constants';
+import {
+  AccountRoles,
+  AccountType,
+  fieldConfig,
+} from '../../common/constants/constants';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AddressDto {

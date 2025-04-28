@@ -20,7 +20,7 @@ import { createLoggerFactory } from './common/logger/winston.logger';
     // Import ConfigModule with global config. No need to import in other modules
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration]
+      load: [configuration],
     }),
     // Registering postgreSQL
     TypeOrmModule.forRootAsync({
@@ -49,10 +49,11 @@ import { createLoggerFactory } from './common/logger/winston.logger';
     // Winston logger
     {
       provide: loggerConstant,
-      useFactory: (configService: ConfigService) => createLoggerFactory('App', configService),
+      useFactory: (configService: ConfigService) =>
+        createLoggerFactory('App', configService),
       inject: [ConfigService],
     },
   ],
   exports: [loggerConstant],
 })
-export class AppModule { }
+export class AppModule {}

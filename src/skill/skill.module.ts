@@ -10,4 +10,4 @@ import { SkillService } from './skill.service';
   controllers: [SkillController],
   providers: [SkillService],
 })
-export class SkillModule { }
+export class SkillModule {}

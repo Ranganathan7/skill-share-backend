@@ -1,6 +1,6 @@
 export enum AccountRoles {
   PROVIDER = 'PROVIDER',
-  USER = 'USER'
+  USER = 'USER',
 }
 
 export enum AccountType {
@@ -11,7 +11,7 @@ export enum AccountType {
 export enum SkillCategory {
   FRONTEND = 'FRONTEND',
   BACKEND = 'BACKEND',
-  TESTING = 'TESTING'
+  TESTING = 'TESTING',
 }
 
 export enum RateCurrency {
@@ -29,7 +29,7 @@ export enum TaskStatus {
 
 export enum NatureOfWork {
   ON_SITE = 'ON_SITE',
-  ONLINE = 'ONLINE'
+  ONLINE = 'ONLINE',
 }
 
 export const fieldConfig = {
@@ -79,24 +79,23 @@ export const fieldConfig = {
     regex: '^[A-Z0-9]{10}$',
   },
   taskName: {
-    length: 50
+    length: 50,
   },
   taskDescription: {
-    length: 100
-  }
+    length: 100,
+  },
 };
 
 export const swaggerConstants = {
-  name: "Skill Share Backend API",
-  description: "API docs for skill share backend services",
-  version: "1.0",
-  uri: "docs"
-}
+  name: 'Skill Share Backend API',
+  description: 'API docs for skill share backend services',
+  version: '1.0',
+  uri: 'docs',
+};
 
 export const headers = {
   authorization: 'authorization',
-  requestId: 'request-id'
-}
+  requestId: 'request-id',
+};
 
-export const loggerConstant = 'LOGGER'
-
+export const loggerConstant = 'LOGGER';

@@ -15,7 +15,7 @@ import { UpdateTaskStatusDto } from './dto/update-status.dto';
 
 @Injectable()
 export class TaskService {
-  constructor(private readonly dataSource: DataSource) { }
+  constructor(private readonly dataSource: DataSource) {}
 
   /**
    * Creates a new task and associates it with a user.
@@ -25,7 +25,10 @@ export class TaskService {
   async createTask(completeDto: CreateTaskDto) {
     const { accountId, ...dto } = completeDto;
 
-    if (new Date(dto.expectedStartDate) < new Date(new Date().setHours(0, 0, 0, 0))) {
+    if (
+      new Date(dto.expectedStartDate) <
+      new Date(new Date().setHours(0, 0, 0, 0))
+    ) {
       throw new BadRequestException({
         errorCode: 'InvalidStartDate',
         description: 'expectedStartDate must be today or a future date',
@@ -62,8 +65,8 @@ export class TaskService {
 
     await this.dataSource.manager.save(TaskEntity, task);
     return {
-      message: 'Task created successfully!'
-    }
+      message: 'Task created successfully!',
+    };
   }
 
   /**
@@ -72,18 +75,16 @@ export class TaskService {
    */
   async findTasksByAccount(accountId: number): Promise<TaskEntity[]> {
     const tasks = await this.dataSource.manager.find(TaskEntity, {
-      where: [
-        { user: { id: accountId } },
-        { provider: { id: accountId } }
-      ],
+      where: [{ user: { id: accountId } }, { provider: { id: accountId } }],
       relations: ['user', 'provider', 'provider.skills'],
-    })
+    });
 
     if (tasks.length === 0) {
       throw new NotFoundException({
         errorCode: 'NoTasksFound',
-        description: 'Invalid account id / No tasks found for provided account id'
-      })
+        description:
+          'Invalid account id / No tasks found for provided account id',
+      });
     }
 
     return tasks;
@@ -99,7 +100,7 @@ export class TaskService {
 
     const task = await this.dataSource.manager.findOne(TaskEntity, {
       where: { id: taskId },
-      relations: ['provider']
+      relations: ['provider'],
     });
 
     if (!task) {
@@ -116,7 +117,8 @@ export class TaskService {
       throw new HttpException(
         {
           errorCode: 'InvalidTaskProgressUpdate',
-          description: 'Task is not assigned to a provider / invalid account id',
+          description:
+            'Task is not assigned to a provider / invalid account id',
         },
         HttpStatus.BAD_REQUEST,
       );
@@ -135,12 +137,12 @@ export class TaskService {
     task.progress.push({
       description,
       timestamp: new Date(),
-    })
+    });
     await this.dataSource.manager.save(TaskEntity, task);
 
     return {
-      message: 'Task progress updated successfully!'
-    }
+      message: 'Task progress updated successfully!',
+    };
   }
 
   /**
@@ -152,7 +154,7 @@ export class TaskService {
 
     const task = await this.dataSource.manager.findOne(TaskEntity, {
       where: { id: taskId },
-      relations: ['user']
+      relations: ['user'],
     });
 
     if (!task) {
@@ -195,11 +197,11 @@ export class TaskService {
       );
     }
 
-    task.status = TaskStatus.COMPLETED
+    task.status = TaskStatus.COMPLETED;
     await this.dataSource.manager.save(TaskEntity, task);
 
     return {
-      message: 'Task status updated successfully!'
-    }
+      message: 'Task status updated successfully!',
+    };
   }
 }

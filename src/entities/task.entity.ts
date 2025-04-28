@@ -1,6 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, BeforeInsert, ManyToMany, JoinTable } from "typeorm";
-import { fieldConfig, RateCurrency, SkillCategory, TaskStatus } from "../common/constants/constants";
-import { AccountEntity } from "./account.entity";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  BeforeInsert,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import {
+  fieldConfig,
+  RateCurrency,
+  SkillCategory,
+  TaskStatus,
+} from '../common/constants/constants';
+import { AccountEntity } from './account.entity';
 
 export class ProgressEntity {
   @Column({ type: 'varchar' })
@@ -39,7 +53,9 @@ export class TaskEntity {
   @Column({ type: 'enum', enum: TaskStatus, default: TaskStatus.PENDING })
   status: TaskStatus;
 
-  @ManyToMany(() => AccountEntity, (account) => account.tasksOffered, { nullable: true })
+  @ManyToMany(() => AccountEntity, (account) => account.tasksOffered, {
+    nullable: true,
+  })
   @JoinTable() // This will create a join table between TaskEntity and AccountEntity
   offers?: AccountEntity[];
 
@@ -47,7 +63,9 @@ export class TaskEntity {
   @Column({ type: 'json', default: [] })
   progress: Array<ProgressEntity>;
 
-  @ManyToOne(() => AccountEntity, (account) => account.tasksWorkedOn, { nullable: true })
+  @ManyToOne(() => AccountEntity, (account) => account.tasksWorkedOn, {
+    nullable: true,
+  })
   provider?: AccountEntity;
 
   @ManyToOne(() => AccountEntity, (account) => account.tasksPosted)

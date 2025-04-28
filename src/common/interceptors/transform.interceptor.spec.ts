@@ -46,22 +46,29 @@ describe('TransformInterceptor', () => {
     try {
       await interceptor.intercept(mockContext, mockCallHandler).toPromise();
     } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException)
+      expect(error).toBeInstanceOf(BadRequestException);
     }
     expect(mockLogger.info).not.toHaveBeenCalled();
   });
 
   it('should log request and response and transform data on success', async () => {
     const requestId = 'test-request-id';
-    mockContext.switchToHttp().getRequest().headers[headers.requestId] = requestId;
+    mockContext.switchToHttp().getRequest().headers[headers.requestId] =
+      requestId;
     const statusCode = mockContext.switchToHttp().getResponse().statusCode;
     const rawResponse = { some: 'data' };
     (mockCallHandler.handle as jest.Mock).mockReturnValue(of(rawResponse));
 
-    const result = await interceptor.intercept(mockContext, mockCallHandler).toPromise();
+    const result = await interceptor
+      .intercept(mockContext, mockCallHandler)
+      .toPromise();
 
-    expect(mockLogger.info).toHaveBeenCalledWith(`Request: GET /test`, [requestId]);
-    expect(mockLogger.info).toHaveBeenCalledWith(`Response: GET /test`, [requestId]);
+    expect(mockLogger.info).toHaveBeenCalledWith(`Request: GET /test`, [
+      requestId,
+    ]);
+    expect(mockLogger.info).toHaveBeenCalledWith(`Response: GET /test`, [
+      requestId,
+    ]);
     expect(result).toEqual({
       statusCode: statusCode,
       timestamp: expect.any(String),
@@ -72,11 +79,16 @@ describe('TransformInterceptor', () => {
 
   it('should handle different status codes in the response', async () => {
     const requestId = 'another-id';
-    mockContext.switchToHttp().getRequest().headers[headers.requestId] = requestId;
+    mockContext.switchToHttp().getRequest().headers[headers.requestId] =
+      requestId;
     mockContext.switchToHttp().getResponse().statusCode = 201;
-    (mockCallHandler.handle as jest.Mock).mockReturnValue(of({ message: 'created' }));
+    (mockCallHandler.handle as jest.Mock).mockReturnValue(
+      of({ message: 'created' }),
+    );
 
-    const result = await interceptor.intercept(mockContext, mockCallHandler).toPromise() as any;
+    const result = (await interceptor
+      .intercept(mockContext, mockCallHandler)
+      .toPromise()) as any;
 
     expect(result.statusCode).toBe(201);
     expect(result.data).toEqual({ message: 'created' });

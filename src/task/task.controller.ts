@@ -6,11 +6,21 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBody,
+  ApiBearerAuth,
+  ApiHeader,
+} from '@nestjs/swagger';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { swaggerAPIOptions } from '../common/swagger/operations';
-import { createTask, updateTaskProgress, updateTaskStatus } from './dto/sample-requests';
+import {
+  createTask,
+  updateTaskProgress,
+  updateTaskStatus,
+} from './dto/sample-requests';
 import { UpdateTaskProgressDto } from './dto/update-progress.dto';
 import { UpdateTaskStatusDto } from './dto/update-status.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
@@ -22,11 +32,11 @@ import { headers } from '../common/constants/constants';
 @ApiBearerAuth()
 @ApiHeader({
   name: headers.requestId,
-  required: true
+  required: true,
 })
 @UseGuards(JwtAuthGuard)
 export class TaskController {
-  constructor(private readonly taskService: TaskService) { }
+  constructor(private readonly taskService: TaskService) {}
 
   /**
    * Endpoint to create a new task.
@@ -39,9 +49,9 @@ export class TaskController {
     type: CreateTaskDto,
     examples: {
       createTask: {
-        value: createTask
+        value: createTask,
       },
-    }
+    },
   })
   @ApiOperation(swaggerAPIOptions.createTask)
   async createTask(@Body() dto: CreateTaskDto) {
@@ -56,7 +66,7 @@ export class TaskController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation(swaggerAPIOptions.getTasks)
   async findTaskByAccount(@Body() dto: GetTasksDto) {
-    return this.taskService.findTasksByAccount(dto.accountId)
+    return this.taskService.findTasksByAccount(dto.accountId);
   }
 
   /**
@@ -70,9 +80,9 @@ export class TaskController {
     type: UpdateTaskProgressDto,
     examples: {
       updateTaskProgress: {
-        value: updateTaskProgress
+        value: updateTaskProgress,
       },
-    }
+    },
   })
   @ApiOperation(swaggerAPIOptions.updateTaskProgress)
   async updateProgress(@Body() dto: UpdateTaskProgressDto) {
@@ -89,9 +99,9 @@ export class TaskController {
     type: UpdateTaskStatusDto,
     examples: {
       updateTaskStatus: {
-        value: updateTaskStatus
+        value: updateTaskStatus,
       },
-    }
+    },
   })
   @ApiOperation(swaggerAPIOptions.updateTaskStatus)
   async updateStatus(@Body() dto: UpdateTaskStatusDto) {

@@ -22,19 +22,19 @@ describe('AcceptOfferDto', () => {
     it('should fail when accountId is not a number', async () => {
       dto.accountId = 'abc' as any; // Invalid accountId (string)
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'accountId')).toBe(true);
+      expect(errors.some((e) => e.property === 'accountId')).toBe(true);
     });
 
     it('should fail when accountId is negative', async () => {
       dto.accountId = -1; // Invalid accountId (negative number)
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'accountId')).toBe(true);
+      expect(errors.some((e) => e.property === 'accountId')).toBe(true);
     });
 
     it('should fail when accountId is zero', async () => {
       dto.accountId = 0; // Invalid accountId (zero is not positive)
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'accountId')).toBe(true);
+      expect(errors.some((e) => e.property === 'accountId')).toBe(true);
     });
   });
 
@@ -47,19 +47,19 @@ describe('AcceptOfferDto', () => {
     it('should fail when providerId is not a number', async () => {
       dto.providerId = 'abc' as any; // Invalid providerId (string)
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'providerId')).toBe(true);
+      expect(errors.some((e) => e.property === 'providerId')).toBe(true);
     });
 
     it('should fail when providerId is negative', async () => {
       dto.providerId = -2; // Invalid providerId (negative number)
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'providerId')).toBe(true);
+      expect(errors.some((e) => e.property === 'providerId')).toBe(true);
     });
 
     it('should fail when providerId is zero', async () => {
       dto.providerId = 0; // Invalid providerId (zero is not positive)
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'providerId')).toBe(true);
+      expect(errors.some((e) => e.property === 'providerId')).toBe(true);
     });
   });
 
@@ -72,19 +72,19 @@ describe('AcceptOfferDto', () => {
     it('should fail when taskId is not a number', async () => {
       dto.taskId = 'abc' as any; // Invalid taskId (string)
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'taskId')).toBe(true);
+      expect(errors.some((e) => e.property === 'taskId')).toBe(true);
     });
 
     it('should fail when taskId is negative', async () => {
       dto.taskId = -3; // Invalid taskId (negative number)
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'taskId')).toBe(true);
+      expect(errors.some((e) => e.property === 'taskId')).toBe(true);
     });
 
     it('should fail when taskId is zero', async () => {
       dto.taskId = 0; // Invalid taskId (zero is not positive)
       const errors = await validate(dto);
-      expect(errors.some(e => e.property === 'taskId')).toBe(true);
+      expect(errors.some((e) => e.property === 'taskId')).toBe(true);
     });
   });
 });
