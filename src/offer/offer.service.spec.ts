@@ -74,6 +74,25 @@ describe('OfferService', () => {
         offers: [account],
       });
     });
+
+    it('should successfully make an offer with task that has no offers before', async () => {
+      const task = { id: 1, provider: null, offers: null };
+      const account = { id: 2, role: AccountRoles.PROVIDER };
+
+      (dataSource.manager.findOne as jest.Mock)
+        .mockResolvedValueOnce(task) // task
+        .mockResolvedValueOnce(account); // provider
+
+      (dataSource.manager.save as jest.Mock).mockResolvedValueOnce({ ...task, offers: [account] });
+
+      const result = await service.makeOffer(2, 1);
+
+      expect(result.offers).toContain(account);
+      expect(dataSource.manager.save).toHaveBeenCalledWith(TaskEntity, {
+        ...task,
+        offers: [account],
+      });
+    });
   });
 
   describe('getOffersForAccount', () => {
@@ -111,6 +130,20 @@ describe('OfferService', () => {
       ]);
     });
 
+    it('should return offered tasks for provider with no tasksOffered', async () => {
+      const account = {
+        id: 1,
+        role: AccountRoles.PROVIDER,
+        tasksOffered: null
+      };
+
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValue(account);
+
+      const result = await service.getOffersForAccount(1);
+
+      expect(result).toEqual([]);
+    });
+
     it('should return posted tasks with offers for user', async () => {
       const account = {
         id: 2,
@@ -146,6 +179,47 @@ describe('OfferService', () => {
           ],
         },
       ]);
+    });
+
+    it('should return posted tasks with offers for user with no taskOffers', async () => {
+      const account = {
+        id: 2,
+        role: AccountRoles.USER,
+        tasksPosted: [
+          {
+            id: 10,
+            name: 'Posted Task',
+            provider: null,
+            offers: null,
+          },
+        ],
+      };
+
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValue(account);
+
+      const result = await service.getOffersForAccount(2);
+
+      expect(result).toEqual([
+        {
+          taskId: 10,
+          taskName: 'Posted Task',
+          offers: [],
+        },
+      ]);
+    });
+
+    it('should return posted tasks with offers for user with no tasksPosted', async () => {
+      const account = {
+        id: 2,
+        role: AccountRoles.USER,
+        tasksPosted: null,
+      };
+
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValue(account);
+
+      const result = await service.getOffersForAccount(2);
+
+      expect(result).toEqual([]);
     });
   });
 
@@ -186,7 +260,7 @@ describe('OfferService', () => {
         id: 3,
         user: { id: 1 },
         provider: null,
-        offers: [{ id: 5 }], // wrong provider
+        offers: null,
       });
 
       await expect(service.acceptOffer(acceptOfferDto)).rejects.toThrow(HttpException);
