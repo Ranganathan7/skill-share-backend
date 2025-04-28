@@ -10,7 +10,6 @@ import { HttpException } from '@nestjs/common';
 jest.mock('../common/utils/hash-password', () => ({
   hashPassword: jest.fn(async (password) => `hashed-${password}`),
   comparePasswords: jest.fn(async (input, hashed) => {
-    console.log('mock compare')
     return input === 'validPassword'
   }),
 }));
@@ -55,7 +54,24 @@ describe('AccountService', () => {
       await expect(service.create(dto)).rejects.toThrow(HttpException);
     });
 
-    it('should create an account successfully', async () => {
+    it('should create an account successfully for company account', async () => {
+      const dto = { ...baseDto, individualAccount: null, companyAccount: { companyName: 'test' }, type: AccountType.COMPANY } as any;
+      await expect(service.create(dto)).resolves.toEqual({
+        message: 'Account created successfully!',
+      });
+
+      expect(dataSource.manager.save).toHaveBeenCalledWith(
+        AccountEntity,
+        expect.objectContaining({
+          email: baseDto.email,
+          type: AccountType.COMPANY,
+          password: `hashed-${baseDto.password}`,
+          companyAccount: dto.companyAccount,
+        }),
+      );
+    });
+
+    it('should create an account successfully for individual account', async () => {
       await expect(service.create(baseDto)).resolves.toEqual({
         message: 'Account created successfully!',
       });
@@ -109,6 +125,44 @@ describe('AccountService', () => {
         accessToken: 'mocked-jwt-token',
         accountId: validAccount.id,
         name: 'John Doe',
+        email: validAccount.email,
+      });
+
+      expect(jwtService.sign).toHaveBeenCalledWith({
+        accountId: validAccount.id,
+        role: validAccount.role,
+        type: validAccount.type,
+      });
+    });
+
+    it('should return access token if credentials are valid with no name', async () => {
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValue({ ...validAccount, individualAccount: undefined });
+
+      const result = await service.authenticate({ email, password: 'validPassword' });
+
+      expect(result).toEqual({
+        accessToken: 'mocked-jwt-token',
+        accountId: validAccount.id,
+        name: '',
+        email: validAccount.email,
+      });
+
+      expect(jwtService.sign).toHaveBeenCalledWith({
+        accountId: validAccount.id,
+        role: validAccount.role,
+        type: validAccount.type,
+      });
+    });
+
+    it('should return access token if credentials are valid with no last name for individual account', async () => {
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValue({ ...validAccount, individualAccount: { firstName: 'test' } });
+
+      const result = await service.authenticate({ email, password: 'validPassword' });
+
+      expect(result).toEqual({
+        accessToken: 'mocked-jwt-token',
+        accountId: validAccount.id,
+        name: 'test',
         email: validAccount.email,
       });
 
