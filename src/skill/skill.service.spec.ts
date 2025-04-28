@@ -39,7 +39,7 @@ describe('SkillService', () => {
     });
 
     it('should throw NotAProvider if account is not a provider', async () => {
-      (dataSource.manager.findOne as jest.Mock).mockResolvedValueOnce({ role: 'USER' });
+      (dataSource.manager.findOne as jest.Mock).mockResolvedValueOnce({ role: AccountRoles.USER });
 
       await expect(service.addOrUpdate(providerId, dto)).rejects.toThrow(HttpException);
     });
